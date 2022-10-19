@@ -1,6 +1,7 @@
 package ie.wit.anglersguide.main
 
 import android.app.Application
+import ie.wit.anglersguide.models.FishingSpotJSONStore
 import ie.wit.anglersguide.models.FishingSpotMemStore
 import ie.wit.anglersguide.models.FishingSpotModel
 import ie.wit.anglersguide.models.FishingSpotStore
@@ -14,7 +15,7 @@ class MainApp : Application() {
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
-        fishingspots = FishingSpotMemStore()
+        fishingspots = FishingSpotJSONStore(applicationContext)
         i("Angler's Guide started")
 
     }
