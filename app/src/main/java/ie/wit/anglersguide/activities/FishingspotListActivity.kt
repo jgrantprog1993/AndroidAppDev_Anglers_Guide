@@ -33,12 +33,14 @@ class FishingspotListActivity : AppCompatActivity() , FishingSpotListener{
         setContentView(binding.root)
         binding.toolbar.title = title
         setSupportActionBar(binding.toolbar)
-        registerRefreshCallback()
+
         app = application as MainApp
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = FishingSpotAdapter(app.fishingspots.findAll(), this)
+        // binding.recyclerView.adapter = FishingSpotAdapter(app.fishingspots.findAll(), this)
+        loadFishingSpots()
+        registerRefreshCallback()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -65,6 +67,16 @@ class FishingspotListActivity : AppCompatActivity() , FishingSpotListener{
     private fun registerRefreshCallback() {
         refreshIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { binding.recyclerView.adapter?.notifyDataSetChanged() }
+            { loadFishingSpots() }
     }
+
+    private fun loadFishingSpots() {
+        showFishingSpots(app.fishingspots.findAll())
+    }
+
+    fun showFishingSpots (fishingspots: List<FishingSpotModel>) {
+        binding.recyclerView.adapter = FishingSpotAdapter(fishingspots, this)
+        binding.recyclerView.adapter?.notifyDataSetChanged()
+    }
+
 }

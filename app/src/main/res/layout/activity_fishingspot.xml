@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     app:srcCompat="@mipmap/ic_launcher"/>
                 <Button
-                    android:id="@+id/placemarkLocation"
+                    android:id="@+id/fishingspotLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
