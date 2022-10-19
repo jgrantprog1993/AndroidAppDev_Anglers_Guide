@@ -1,6 +1,7 @@
 package ie.wit.anglersguide.activities
 
 import android.content.Intent
+
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,6 +16,7 @@ import ie.wit.anglersguide.databinding.ActivityFishingspotBinding
 import ie.wit.anglersguide.helpers.showImagePicker
 import ie.wit.anglersguide.main.MainApp
 import ie.wit.anglersguide.models.FishingSpotModel
+import ie.wit.anglersguide.models.Location
 import timber.log.Timber
 import timber.log.Timber.i
 
@@ -22,6 +24,7 @@ class FishingspotActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityFishingspotBinding
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
     var fishingSpot = FishingSpotModel()
     lateinit var app : MainApp
 
@@ -34,6 +37,7 @@ class FishingspotActivity : AppCompatActivity() {
         app = application as MainApp
         var edit = false
         registerImagePickerCallback()
+        registerMapCallback()
 
         if (intent.hasExtra("fishingspot_edit")) {
             edit = true
@@ -83,10 +87,22 @@ class FishingspotActivity : AppCompatActivity() {
             i("Select image")
             showImagePicker(imageIntentLauncher)
         }
-        binding.placemarkLocation.setOnClickListener {
+
+        binding.fishingspotLocation.setOnClickListener {
+            val location = Location(52.149, -6.9896, 15f)
             i ("Set Location Pressed")
+
+            if (fishingSpot.zoom != 0f) {
+                location.lat =  fishingSpot.lat
+                location.lng = fishingSpot.lng
+                location.zoom = fishingSpot.zoom
+            }
+            val launcherIntent = Intent(this, MapActivity::class.java)
+                .putExtra("location", location)
+            mapIntentLauncher.launch(launcherIntent)
         }
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_fishingspot, menu)
@@ -115,6 +131,23 @@ class FishingspotActivity : AppCompatActivity() {
                                 .load(fishingSpot.image)
                                 .into(binding.fishingspotImage)
                             binding.chooseImage.setText(R.string.change_fishingspot_image)
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> { } else -> { }
+                }
+            }
+    }
+
+    private fun registerMapCallback() {
+        mapIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { result ->
+                when (result.resultCode) {
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Location ${result.data.toString()}")
+                            val location = result.data!!.extras?.getParcelable<Location>("location")!!
+                            i("Location == $location")
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }

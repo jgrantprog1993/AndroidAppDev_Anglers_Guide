@@ -11,7 +11,6 @@ internal fun getId(): Long {
 class FishingSpotMemStore : FishingSpotStore {
 
     val fishingspots = ArrayList<FishingSpotModel>()
-
     override fun findAll(): List<FishingSpotModel> {
         return fishingspots
     }
@@ -28,6 +27,9 @@ class FishingSpotMemStore : FishingSpotStore {
             foundFishingspot.title = fishingspot.title
             foundFishingspot.description = fishingspot.description
             foundFishingspot.image = fishingspot.image
+            foundFishingspot.lat = fishingspot.lat
+            foundFishingspot.lng = fishingspot.lng
+            foundFishingspot.zoom = fishingspot.zoom
             logAll()
         }
     }
