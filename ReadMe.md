@@ -7,4 +7,4 @@
 - Add Fishing Spot (Title, Desc, Image)
 - Show via Card
 - Edit Fishing Spot (Title, Desc, Image)
-- Temp Storageß
+- Temp Storage
