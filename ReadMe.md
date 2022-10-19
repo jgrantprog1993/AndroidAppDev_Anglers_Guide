@@ -8,3 +8,4 @@
 - Show via Card
 - Edit Fishing Spot (Title, Desc, Image)
 - Temp Storage
+- Google Maps Feature
