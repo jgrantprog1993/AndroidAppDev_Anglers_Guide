@@ -30,14 +30,17 @@ class FishingspotActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityFishingspotBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
+
         app = application as MainApp
+
         var edit = false
-        registerImagePickerCallback()
-        registerMapCallback()
+
+
 
         if (intent.hasExtra("fishingspot_edit")) {
             edit = true
@@ -101,6 +104,9 @@ class FishingspotActivity : AppCompatActivity() {
                 .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
         }
+
+        registerImagePickerCallback()
+        registerMapCallback()
     }
 
 
@@ -148,6 +154,9 @@ class FishingspotActivity : AppCompatActivity() {
                             i("Got Location ${result.data.toString()}")
                             val location = result.data!!.extras?.getParcelable<Location>("location")!!
                             i("Location == $location")
+                            fishingSpot.lat = location.lat
+                            fishingSpot.lng = location.lng
+                            fishingSpot.zoom = location.zoom
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }

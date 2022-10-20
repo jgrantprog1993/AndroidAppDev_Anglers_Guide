@@ -1,6 +1,6 @@
 # __Angler's Guide App__
 
-## This is an app developed in Kotlin (Android Studio)
+__This is an app developed in Kotlin (Android Studio)__
 
 
 ## Current Features
@@ -9,3 +9,4 @@
 - Edit Fishing Spot (Title, Desc, Image)
 - Temp Storage
 - Google Maps Feature
+- Persistence via json data in file

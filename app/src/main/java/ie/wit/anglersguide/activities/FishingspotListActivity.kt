@@ -38,7 +38,7 @@ class FishingspotListActivity : AppCompatActivity() , FishingSpotListener{
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        // binding.recyclerView.adapter = FishingSpotAdapter(app.fishingspots.findAll(), this)
+        binding.recyclerView.adapter = FishingSpotAdapter(app.fishingspots.findAll(), this)
         loadFishingSpots()
         registerRefreshCallback()
     }
