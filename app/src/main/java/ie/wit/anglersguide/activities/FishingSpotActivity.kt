@@ -154,6 +154,9 @@ class FishingspotActivity : AppCompatActivity() {
                             i("Got Location ${result.data.toString()}")
                             val location = result.data!!.extras?.getParcelable<Location>("location")!!
                             i("Location == $location")
+                            fishingSpot.lat = location.lat
+                            fishingSpot.lng = location.lng
+                            fishingSpot.zoom = location.zoom
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }
