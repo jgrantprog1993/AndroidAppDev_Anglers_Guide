@@ -3,14 +3,10 @@ package ie.wit.anglersguide.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,11 +14,8 @@ import ie.wit.anglersguide.R
 import ie.wit.anglersguide.adaptors.FishingSpotAdapter
 import ie.wit.anglersguide.adaptors.FishingSpotListener
 import ie.wit.anglersguide.databinding.ActivityFishingspotListBinding
-import ie.wit.anglersguide.databinding.CardFishingspotBinding
-import ie.wit.anglersguide.helpers.SwipeToDeleteCallback
 import ie.wit.anglersguide.main.MainApp
 import ie.wit.anglersguide.models.FishingSpotModel
-import timber.log.Timber.i
 
 class FishingspotListActivity : AppCompatActivity() , FishingSpotListener{
 
@@ -53,7 +46,7 @@ class FishingspotListActivity : AppCompatActivity() , FishingSpotListener{
             override fun onMove(p0: RecyclerView, p1: RecyclerView.ViewHolder, p2: RecyclerView.ViewHolder): Boolean{
                return false
             }
-
+            //https://www.youtube.com/watch?v=eEonjkmox-0
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
                 //(viewAdaptor as FishingSpotAdapter).removeItem(viewHolder)
                 (binding.recyclerView.adapter as FishingSpotAdapter).removeItem(viewHolder)
