@@ -9,3 +9,4 @@ __This is an app developed in Kotlin (Android Studio)__
 - Edit Fishing Spot (Title, Desc, Image)
 - Temp Storage
 - Google Maps Feature
+- Persistence via json data in file
