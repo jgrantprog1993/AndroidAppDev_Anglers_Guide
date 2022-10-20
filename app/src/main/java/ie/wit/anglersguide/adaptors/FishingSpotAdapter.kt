@@ -11,7 +11,7 @@ interface FishingSpotListener {
     fun onFishingSpotClick(fishingspot: FishingSpotModel)
 }
 
-class FishingSpotAdapter constructor(private var fishingspots: List<FishingSpotModel>,
+class FishingSpotAdapter constructor(private var fishingspots: MutableList<FishingSpotModel>,
                                      private val listener: FishingSpotListener) :
     RecyclerView.Adapter<FishingSpotAdapter.MainHolder>() {
 
@@ -26,7 +26,13 @@ class FishingSpotAdapter constructor(private var fishingspots: List<FishingSpotM
         holder.bind(fishingspot, listener)
     }
 
+
     override fun getItemCount(): Int = fishingspots.size
+
+    fun removeItem(viewMainHolder: RecyclerView.ViewHolder){
+        fishingspots.removeAt(viewMainHolder.adapterPosition)
+        notifyItemRemoved(viewMainHolder.adapterPosition)
+    }
 
     class MainHolder(private val binding : CardFishingspotBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -38,5 +44,6 @@ class FishingSpotAdapter constructor(private var fishingspots: List<FishingSpotM
             binding.root.setOnClickListener { listener.onFishingSpotClick(fishingspot) }
         }
     }
+
 
 }

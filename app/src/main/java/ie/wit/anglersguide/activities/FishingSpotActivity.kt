@@ -91,6 +91,7 @@ class FishingspotActivity : AppCompatActivity() {
             showImagePicker(imageIntentLauncher)
         }
 
+
         binding.fishingspotLocation.setOnClickListener {
             val location = Location(52.149, -6.9896, 15f)
             i ("Set Location Pressed")
@@ -114,6 +115,7 @@ class FishingspotActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.menu_fishingspot, menu)
         return super.onCreateOptionsMenu(menu)
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
