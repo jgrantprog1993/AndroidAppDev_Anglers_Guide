@@ -72,11 +72,7 @@ class FishingspotListActivity : AppCompatActivity() , FishingSpotListener{
             ) {
                 val itemView = viewHolder.itemView
                 val iconMargin =  (itemView.height - deleteIcon.intrinsicHeight) / 2
-                if (dX > 0) {
-                    swipeBackground.setBounds(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
-                    deleteIcon.setBounds(itemView.left + iconMargin, itemView.top + iconMargin, itemView.left + iconMargin + deleteIcon.intrinsicWidth,
-                    itemView.bottom - iconMargin)
-                } else {
+                if (dX < 0)  {
                     swipeBackground.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
                     deleteIcon.setBounds(itemView.right - iconMargin - deleteIcon.intrinsicWidth, itemView.top + iconMargin, itemView.right + iconMargin,
                         itemView.bottom - iconMargin)
@@ -84,12 +80,9 @@ class FishingspotListActivity : AppCompatActivity() , FishingSpotListener{
                 swipeBackground.draw(c)
                 c.save()
 
-                if(dX>0) {
-                    c.clipRect(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
-                } else {
+                if(dX<0) {
                   c.clipRect(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
                 }
-
                 deleteIcon.draw(c)
 
                 c.restore()
