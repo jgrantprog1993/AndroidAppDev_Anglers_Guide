@@ -44,11 +44,12 @@ class FishingSpotAdapter constructor(private var fishingspots: MutableList<Fishi
         fishingspots.removeAt(viewMainHolder.adapterPosition)
         notifyItemRemoved(viewMainHolder.adapterPosition)
 
-        Snackbar.make(viewMainHolder.itemView, "$removedItemTitle Deleted.", Snackbar.LENGTH_LONG).setAction("UNDO"){
-            i("This is the removed iterm $removedItem")
-            fishingspots.add(removedItem)
-            notifyItemInserted(removedPosition)
-        }.show()
+        Snackbar.make(viewMainHolder.itemView, "$removedItemTitle  - DELETED FROM LIST.", Snackbar.LENGTH_LONG)
+            //.setAction("UNDO"){
+            //i("This is the removed iterm $removedItem")
+            //fishingspots.add(removedItem.copy())
+            //notifyItemInserted(removedPosition)
+            .show()
     }
 
     class MainHolder(private val binding : CardFishingspotBinding) :

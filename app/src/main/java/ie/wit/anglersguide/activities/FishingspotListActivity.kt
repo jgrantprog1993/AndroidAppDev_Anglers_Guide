@@ -1,12 +1,17 @@
 package ie.wit.anglersguide.activities
 
 import android.content.Intent
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +30,8 @@ class FishingspotListActivity : AppCompatActivity() , FishingSpotListener{
     private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
     private var dataset = mutableListOf<FishingSpotModel>()
     var fishingSpot = FishingSpotModel()
+    private var swipeBackground: ColorDrawable = ColorDrawable(Color.parseColor("#FF0000"))
+    private lateinit var deleteIcon: Drawable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +41,7 @@ class FishingspotListActivity : AppCompatActivity() , FishingSpotListener{
         setSupportActionBar(binding.toolbar)
         //i("This is a list to see if i can access $list")
         app = application as MainApp
+        deleteIcon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_delete_sweep_24)!!
         viewAdaptor = FishingSpotAdapter(dataset, this)
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
@@ -51,6 +59,42 @@ class FishingspotListActivity : AppCompatActivity() , FishingSpotListener{
                 //(viewAdaptor as FishingSpotAdapter).removeItem(viewHolder)
                 (binding.recyclerView.adapter as FishingSpotAdapter).removeItem(viewHolder)
                 app.fishingspots.delete(fishingSpot.copy())
+            }
+
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                val itemView = viewHolder.itemView
+                val iconMargin =  (itemView.height - deleteIcon.intrinsicHeight) / 2
+                if (dX > 0) {
+                    swipeBackground.setBounds(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
+                    deleteIcon.setBounds(itemView.left + iconMargin, itemView.top + iconMargin, itemView.left + iconMargin + deleteIcon.intrinsicWidth,
+                    itemView.bottom - iconMargin)
+                } else {
+                    swipeBackground.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+                    deleteIcon.setBounds(itemView.right - iconMargin - deleteIcon.intrinsicWidth, itemView.top + iconMargin, itemView.right + iconMargin,
+                        itemView.bottom - iconMargin)
+                }
+                swipeBackground.draw(c)
+                c.save()
+
+                if(dX>0) {
+                    c.clipRect(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
+                } else {
+                  c.clipRect(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+                }
+
+                deleteIcon.draw(c)
+
+                c.restore()
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
             }
 
         }
