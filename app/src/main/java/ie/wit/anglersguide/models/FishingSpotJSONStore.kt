@@ -58,6 +58,12 @@ class FishingSpotJSONStore(private val context: Context) : FishingSpotStore {
         serialize()
     }
 
+    override fun delete(fishingspot: FishingSpotModel) {
+        fishingspots.remove(fishingspot)
+        serialize()
+    }
+
+
     private fun serialize() {
         val jsonString = gsonBuilder.toJson(fishingspots, listType)
         write(context, JSON_FILE, jsonString)
