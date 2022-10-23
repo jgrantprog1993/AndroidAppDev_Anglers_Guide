@@ -29,6 +29,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.FishingspotActivity"></activity>
+        <activity android:name=".activities.FishingspotAllMapActivity"></activity>
     </application>
 
 </manifest>

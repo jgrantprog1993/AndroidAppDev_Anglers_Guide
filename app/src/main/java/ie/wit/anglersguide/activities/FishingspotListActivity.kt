@@ -28,7 +28,7 @@ class FishingspotListActivity : AppCompatActivity() , FishingSpotListener{
     lateinit var viewAdaptor: RecyclerView.Adapter<*>
     private lateinit var binding: ActivityFishingspotListBinding
     private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
-    private var dataset = mutableListOf<FishingSpotModel>()
+    //private var dataset = mutableListOf<FishingSpotModel>()
     var fishingSpot = FishingSpotModel()
     private var swipeBackground: ColorDrawable = ColorDrawable(Color.parseColor("#FF0000"))
     private lateinit var deleteIcon: Drawable
@@ -42,7 +42,7 @@ class FishingspotListActivity : AppCompatActivity() , FishingSpotListener{
         //i("This is a list to see if i can access $list")
         app = application as MainApp
         deleteIcon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_delete_sweep_24)!!
-        viewAdaptor = FishingSpotAdapter(dataset, this)
+        //viewAdaptor = FishingSpotAdapter(dataset, this)
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = FishingSpotAdapter(app.fishingspots.findAll(), this)
@@ -54,7 +54,7 @@ class FishingspotListActivity : AppCompatActivity() , FishingSpotListener{
             override fun onMove(p0: RecyclerView, p1: RecyclerView.ViewHolder, p2: RecyclerView.ViewHolder): Boolean{
                return false
             }
-            //https://www.youtube.com/watch?v=eEonjkmox-0
+            // Reference -> https://www.youtube.com/watch?v=eEonjkmox-0
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
                 //(viewAdaptor as FishingSpotAdapter).removeItem(viewHolder)
                 (binding.recyclerView.adapter as FishingSpotAdapter).removeItem(viewHolder)
@@ -107,6 +107,12 @@ class FishingspotListActivity : AppCompatActivity() , FishingSpotListener{
                 val launcherIntent = Intent(this, FishingspotActivity::class.java)
                 refreshIntentLauncher.launch(launcherIntent)
             }
+
+            R.id.action_Explore-> {
+                startActivity(Intent(this, FishingspotAllMapActivity::class.java))
+
+            }
+            //else -> super.onOptionsItemSelected(item)
         }
         return super.onOptionsItemSelected(item)
     }
