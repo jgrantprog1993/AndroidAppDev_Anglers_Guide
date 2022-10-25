@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">AnglersGuide</string>
     <string name="button_addFishingSpot">Add Fishing Spot</string>
     <string name="hint_fishingspotTitle">Fishing Spot Title</string>
@@ -36,7 +36,15 @@
     <string name="action_send">Send</string>
     <string name="group_communicate">Communicate</string>
 
+    <string name="action_summarise">Summarise</string>
+    <string name="action_addFishingSpot">Add Fishing Spot</string>
+
+
     <string name="all_markers_view">Explore</string>
+
+    <string name="nav_header_title">Anglers Guide</string>
+    <string name="nav_header_subtitle">angler1@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
 
 
 </resources>

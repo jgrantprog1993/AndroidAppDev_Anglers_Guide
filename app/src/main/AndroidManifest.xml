@@ -10,6 +10,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AnglersGuide">
+        <activity
+            android:name=".activities.Home"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -28,8 +41,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.FishingspotActivity"></activity>
-        <activity android:name=".activities.FishingspotAllMapActivity"></activity>
+        <activity android:name=".activities.FishingspotActivity" />
+        <activity android:name=".activities.FishingspotAllMapActivity" />
     </application>
 
 </manifest>

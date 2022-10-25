@@ -10,6 +10,8 @@ import ie.wit.anglersguide.models.FishingSpotModel
 import timber.log.Timber.i
 
 interface FishingSpotListener {
+
+
     fun onFishingSpotClick(fishingspot: FishingSpotModel)
 }
 

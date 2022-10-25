@@ -1,63 +1,70 @@
-package ie.wit.anglersguide.activities
+package ie.wit.anglersguide.fragments
 
+
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import androidx.appcompat.app.AppCompatActivity
+import android.icu.text.DateFormat
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
+import android.view.*
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ie.wit.anglersguide.R
+import ie.wit.anglersguide.activities.FishingspotActivity
 import ie.wit.anglersguide.adaptors.FishingSpotAdapter
-import ie.wit.anglersguide.adaptors.FishingSpotListener
-import ie.wit.anglersguide.databinding.ActivityFishingspotListBinding
+import ie.wit.anglersguide.databinding.FragmentFishingSpotListBinding
+import ie.wit.anglersguide.databinding.FragmentSummariseBinding
 import ie.wit.anglersguide.main.MainApp
+import ie.wit.anglersguide.models.SummaryModel
+import ie.wit.anglersguide.models.generateRandomId
+import ie.wit.anglersguide.adaptors.FishingSpotListener
 import ie.wit.anglersguide.models.FishingSpotModel
 
-class FishingspotListActivity : AppCompatActivity() , FishingSpotListener{
+class FishingSpotListFragment: Fragment(), FishingSpotListener{
 
-    lateinit var app: MainApp
-    lateinit var viewAdaptor: RecyclerView.Adapter<*>
-    private lateinit var binding: ActivityFishingspotListBinding
+    private var _fragBinding: FragmentFishingSpotListBinding? = null
+    private val fragBinding get() = _fragBinding!!
+    lateinit var  app: MainApp
     private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
-    //private var dataset = mutableListOf<FishingSpotModel>()
+    private lateinit var deleteIcon: Drawable
     var fishingSpot = FishingSpotModel()
     private var swipeBackground: ColorDrawable = ColorDrawable(Color.parseColor("#FF0000"))
-    private lateinit var deleteIcon: Drawable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityFishingspotListBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        binding.toolbar.title = title
-        setSupportActionBar(binding.toolbar)
-        //i("This is a list to see if i can access $list")
-        app = application as MainApp
-        deleteIcon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_delete_sweep_24)!!
-        //viewAdaptor = FishingSpotAdapter(dataset, this)
-        val layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = FishingSpotAdapter(app.fishingspots.findAll(), this)
-        loadFishingSpots()
-        registerRefreshCallback()
-        //listOf(binding.recyclerView.adapter).elementAt(1)
+        app = activity?.application as MainApp
+        setHasOptionsMenu(true)
+    }
+
+    @SuppressLint("UseRequireInsteadOfGet")
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _fragBinding = FragmentFishingSpotListBinding.inflate(inflater, container, false)
+        val root = fragBinding.root
+        activity?.title = getString(R.string.action_fishingSpot)
+        fragBinding.recyclerView.setLayoutManager(LinearLayoutManager(activity))
+        fragBinding.recyclerView.adapter = FishingSpotAdapter(app.fishingspots.findAll(), this)
+        deleteIcon = this.context?.let { ContextCompat.getDrawable(it, R.drawable.ic_baseline_delete_sweep_24) }!!
 
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
             override fun onMove(p0: RecyclerView, p1: RecyclerView.ViewHolder, p2: RecyclerView.ViewHolder): Boolean{
-               return false
+                return false
             }
-            // Reference -> https://www.youtube.com/watch?v=eEonjkmox-0
+
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
                 //(viewAdaptor as FishingSpotAdapter).removeItem(viewHolder)
-                (binding.recyclerView.adapter as FishingSpotAdapter).removeItem(viewHolder)
+                (_fragBinding?.recyclerView?.adapter as FishingSpotAdapter).removeItem(viewHolder)
                 app.fishingspots.delete(fishingSpot.copy())
             }
 
@@ -81,7 +88,7 @@ class FishingspotListActivity : AppCompatActivity() , FishingSpotListener{
                 c.save()
 
                 if(dX<0) {
-                  c.clipRect(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+                    c.clipRect(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
                 }
                 deleteIcon.draw(c)
 
@@ -92,35 +99,29 @@ class FishingspotListActivity : AppCompatActivity() , FishingSpotListener{
 
         }
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
-        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
-
+        itemTouchHelper.attachToRecyclerView(_fragBinding!!.recyclerView)
+        return root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return super.onCreateOptionsMenu(menu)
+
+
+    companion object {
+        @JvmStatic
+        fun newInstance() =
+            FishingSpotListFragment().apply {
+                arguments = Bundle().apply {  }
+            }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.item_add -> {
-                val launcherIntent = Intent(this, FishingspotActivity::class.java)
-                refreshIntentLauncher.launch(launcherIntent)
-            }
-
-            R.id.mapAllFishingSpotsFragment-> {
-                startActivity(Intent(this, FishingspotAllMapActivity::class.java))
-
-            }
-            //else -> super.onOptionsItemSelected(item)
-        }
-        return super.onOptionsItemSelected(item)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _fragBinding = null
     }
 
     override fun onFishingSpotClick(fishingspot: FishingSpotModel) {
-        val launcherIntent = Intent(this, FishingspotActivity::class.java)
+        val launcherIntent = Intent(this@FishingSpotListFragment.context, FishingspotActivity::class.java)
         launcherIntent.putExtra("fishingspot_edit", fishingspot)
-        refreshIntentLauncher.launch(launcherIntent)
+        startActivityForResult(launcherIntent,0)
     }
 
     private fun registerRefreshCallback() {
@@ -134,8 +135,23 @@ class FishingspotListActivity : AppCompatActivity() , FishingSpotListener{
     }
 
     fun showFishingSpots (fishingspots: MutableList<FishingSpotModel>) {
-        binding.recyclerView.adapter = FishingSpotAdapter(fishingspots, this)
-        binding.recyclerView.adapter?.notifyDataSetChanged()
+        _fragBinding?.recyclerView?.adapter = FishingSpotAdapter(fishingspots, this)
+        _fragBinding?.recyclerView?.adapter?.notifyDataSetChanged()
+    }
+
+   /// override fun onCreateOptionsMenu(menu: Menu): Boolean {
+       // menuInflater.inflate(R.menu.menu_main, menu)
+       // return super.onCreateOptionsMenu(menu)
+   // }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.item_add -> {
+                val launcherIntent = Intent(this@FishingSpotListFragment.context, FishingspotActivity::class.java)
+                startActivityForResult(launcherIntent,0)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }
