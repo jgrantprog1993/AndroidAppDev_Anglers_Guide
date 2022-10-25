@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">AnglersGuide</string>
     <string name="button_addFishingSpot">Add Fishing Spot</string>
     <string name="hint_fishingspotTitle">Fishing Spot Title</string>
@@ -11,4 +11,40 @@
     <string name="change_fishingspot_image">Change fishingspot image</string>
     <string name="button_location">Set Location</string>
     <string name="title_activity_map">MapActivity</string>
+
+    <string name="summaryTitle">Welcome User</string>
+    <string name="summarySubtitle">Give Summary of your Activity</string>
+    <string name="locationtoBeSelected">Select FishingSpot :</string>
+    <string name="hint_location">Which fishing spot ?</string>
+    <string name="addButton">Add</string>
+    <string name="date">Date:</string>
+    <string name="setDate">Set Date</string>
+    <string name="hint_weatherSummary">What\'s the weather like ?</string>
+    <string name="weather">Weather:</string>
+    <string name="weatherDesc">Weather:</string>
+    <string name="amountCaught">Enter No. Fish Caught</string>
+    <string name="tide">Tide Conditions:</string>
+    <string name="ratingStars">Location Rating:</string>
+    <string name="tideIn">Tide In</string>
+    <string name="tideOut">Tide Out</string>
+    <string name="fishingSpotRating">Rating</string>
+
+    <string name="action_fishingSpot">List FishingSpots</string>
+    <string name="action_Explore">Explore</string>
+
+    <string name="action_share">Share</string>
+    <string name="action_send">Send</string>
+    <string name="group_communicate">Communicate</string>
+
+    <string name="action_summarise">Summarise</string>
+    <string name="action_addFishingSpot">Add Fishing Spot</string>
+
+
+    <string name="all_markers_view">Explore</string>
+
+    <string name="nav_header_title">Anglers Guide</string>
+    <string name="nav_header_subtitle">angler1@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+
 </resources>

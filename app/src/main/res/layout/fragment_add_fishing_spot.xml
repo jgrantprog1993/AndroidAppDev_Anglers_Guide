@@ -26,7 +26,7 @@
                 android:id="@+id/toolbarAdd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:titleTextColor="@color/white" />
+                app:titleTextColor="@color/colorPrimary" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <ScrollView
@@ -46,6 +46,7 @@
                     android:layout_height="45dp"
                     android:layout_margin="8dp"
                     android:autofillHints=""
+                    android:saveEnabled="false"
                     android:hint="@string/hint_fishingspotTitle"
                     android:inputType="text"
                     android:maxLength="25"
@@ -58,6 +59,7 @@
                     android:id="@+id/description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:saveEnabled="false"
                     android:layout_margin="8dp"
                     android:hint="@string/hint_fishingspotDescription"
                     android:inputType="text"

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/fishingSpotListFragment"
+            android:icon="@drawable/ic_baseline_view_list_24"
+            android:title="@string/action_fishingSpot" />
+        <item
+            android:id="@+id/mapAllFishingSpotsFragment"
+            android:icon="@drawable/ic_baseline_map_24"
+            android:title="@string/action_Explore" />
+        <item
+            android:id="@+id/fishingSpotFragment"
+            android:icon="@drawable/ic_baseline_add_location_alt_24"
+            android:title="@string/action_addFishingSpot" />
+
+        <!--        <item-->
+        <!--            android:id="@+id/summariseFragment"-->
+        <!--            android:icon="@drawable/ic_baseline_edit_location_alt_24"-->
+        <!--            android:title="@string/action_summarise" />-->
+
+    </group>
+
+    <item android:title="@string/group_communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:title="@string/action_share" />
+            <item
+                android:id="@+id/nav_send"
+                android:title="@string/action_send" />
+        </menu>
+    </item>
+</menu>

@@ -113,7 +113,7 @@ class FishingspotActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_fishingspot, menu)
-        return super.onCreateOptionsMenu(menu)
+        return true
     }
 
 
@@ -121,6 +121,10 @@ class FishingspotActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.item_cancel -> {
                 finish()
+            }
+            R.id.action_listfishingspots -> {
+                startActivity(Intent(this, FishingspotListActivity::class.java))
+                true
             }
         }
         return super.onOptionsItemSelected(item)
