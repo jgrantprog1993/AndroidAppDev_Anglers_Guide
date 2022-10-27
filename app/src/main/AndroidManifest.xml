@@ -2,7 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ie.wit.anglersguide">
 
+    <uses-feature android:name="android.hardware.camera.any" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+
     <application
+
         android:name=".main.MainApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,13 +18,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AnglersGuide">
         <activity
-            android:name=".activities.Home"
+            android:name=".activities.SplashScreenActivity"
+            android:theme="@style/Theme.AnglersGuide"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".activities.Home"
+            android:exported="true">
+
 
             <meta-data
                 android:name="android.app.lib_name"
@@ -43,6 +60,7 @@
         </activity>
         <activity android:name=".activities.FishingspotActivity" />
         <activity android:name=".activities.FishingspotAllMapActivity" />
+
     </application>
 
 </manifest>

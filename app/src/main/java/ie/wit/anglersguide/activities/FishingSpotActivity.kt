@@ -1,14 +1,25 @@
 package ie.wit.anglersguide.activities
 
-import android.content.Intent
+//import ie.wit.anglersguide.fragments.REQUEST_CODE
 
+import android.R.attr.bitmap
+import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Bitmap.CompressFormat
+import android.graphics.Movie.decodeStream
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import ie.wit.anglersguide.R
@@ -17,16 +28,22 @@ import ie.wit.anglersguide.helpers.showImagePicker
 import ie.wit.anglersguide.main.MainApp
 import ie.wit.anglersguide.models.FishingSpotModel
 import ie.wit.anglersguide.models.Location
-import timber.log.Timber
 import timber.log.Timber.i
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+
 
 class FishingspotActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityFishingspotBinding
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var cameraIntentLauncher : ActivityResultLauncher<Intent>
     var fishingSpot = FishingSpotModel()
     lateinit var app : MainApp
+    val REQUEST_IMAGE_CAPTURE = 100
+
+    var imagePicker: ImageView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +57,9 @@ class FishingspotActivity : AppCompatActivity() {
 
         var edit = false
 
-
+        imagePicker = findViewById(R.id.fishingspotImage)
+        val gallery = findViewById<Button>(R.id.chooseImage)
+        val camera = findViewById<Button>(R.id.takeImage)
 
         if (intent.hasExtra("fishingspot_edit")) {
             edit = true
@@ -48,11 +67,13 @@ class FishingspotActivity : AppCompatActivity() {
             binding.fishingspotTitle.setText(fishingSpot.title)
             binding.description.setText(fishingSpot.description)
             binding.btnAdd.setText(R.string.save_fishingspot)
+
             Picasso.get()
                 .load(fishingSpot.image)
                 .into(binding.fishingspotImage)
             if (fishingSpot.image != Uri.EMPTY) {
                 binding.chooseImage.setText(R.string.change_fishingspot_image)
+                binding.takeImage.setText(R.string.take_new_fishingspot_image)
             }
         }
         binding.btnAdd.setOnClickListener() {
@@ -91,7 +112,6 @@ class FishingspotActivity : AppCompatActivity() {
             showImagePicker(imageIntentLauncher)
         }
 
-
         binding.fishingspotLocation.setOnClickListener {
             val location = Location(52.149, -6.9896, 15f)
             i ("Set Location Pressed")
@@ -106,8 +126,43 @@ class FishingspotActivity : AppCompatActivity() {
             mapIntentLauncher.launch(launcherIntent)
         }
 
+        binding.takeImage.setOnClickListener{
+            i ("Take Image")
+            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            try {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+            }catch(e: ActivityNotFoundException){
+                Toast.makeText(this, "Error: " + e.localizedMessage, Toast.LENGTH_SHORT).show()
+            }
+        }
+
         registerImagePickerCallback()
         registerMapCallback()
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(requestCode == REQUEST_IMAGE_CAPTURE &&  resultCode == Activity.RESULT_OK)
+        {
+            var takenImage = data?.extras?.get("data") as Bitmap
+            i("Taken image - $takenImage")
+            //binding.fishingspotImage.setImageBitmap(takenImage)
+
+            val bos = ByteArrayOutputStream()
+            takenImage.compress(CompressFormat.PNG, 0 /*ignored for PNG*/, bos)
+            var pathImage: String
+            pathImage = MediaStore.Images.Media.insertImage(getApplicationContext().contentResolver, takenImage, "New Picture", null)
+            val bitmapdata = bos.toByteArray()
+            val bs = ByteArrayInputStream(bitmapdata)
+
+            i("pathImage - $pathImage")
+            val x = decodeStream(bs)
+
+            i("TdecodeStream(bs) - $x")
+
+        } else {
+        super.onActivityResult(requestCode, resultCode, data)
+        }
     }
 
 
