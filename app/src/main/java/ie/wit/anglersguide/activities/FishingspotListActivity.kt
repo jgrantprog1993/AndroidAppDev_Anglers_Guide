@@ -117,6 +117,11 @@ class FishingspotListActivity : AppCompatActivity() , FishingSpotListener{
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onResume() {
+        loadFishingSpots()
+        super.onResume()
+
+    }
     override fun onFishingSpotClick(fishingspot: FishingSpotModel) {
         val launcherIntent = Intent(this, FishingspotActivity::class.java)
         launcherIntent.putExtra("fishingspot_edit", fishingspot)

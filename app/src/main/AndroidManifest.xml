@@ -32,9 +32,8 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.Home"
+            android:name=".activities.HostingAccActivity"
             android:exported="true">
-
 
             <meta-data
                 android:name="android.app.lib_name"
@@ -58,8 +57,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".activities.FishingspotActivity" />
+        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.RegisterActivity" />
         <activity android:name=".activities.FishingspotAllMapActivity" />
+        <activity android:name=".activities.Home" />
 
     </application>
 

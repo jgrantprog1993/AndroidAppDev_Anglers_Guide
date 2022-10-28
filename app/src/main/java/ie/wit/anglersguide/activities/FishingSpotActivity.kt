@@ -66,10 +66,12 @@ class FishingspotActivity : AppCompatActivity() {
             fishingSpot = intent.extras?.getParcelable("fishingspot_edit")!!
             binding.fishingspotTitle.setText(fishingSpot.title)
             binding.description.setText(fishingSpot.description)
-            binding.btnAdd.setText(R.string.save_fishingspot)
+            binding.btnAdd.setText(R.string.update_fishingspot)
+            binding.fishingspotLocation.setText(R.string.button_update_location)
 
             Picasso.get()
                 .load(fishingSpot.image)
+                .resize(200,200)
                 .into(binding.fishingspotImage)
             if (fishingSpot.image != Uri.EMPTY) {
                 binding.chooseImage.setText(R.string.change_fishingspot_image)

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "921452084576",
+    "project_id": "anglersguide-e60de",
+    "storage_bucket": "anglersguide-e60de.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:921452084576:android:ed6efe2d62e936b02db205",
+        "android_client_info": {
+          "package_name": "ie.wit.anglersguide"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "921452084576-9j5u6g4kp9ut5nt2ankaalso19esft5a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAn59z7XT0ifUAbhsJ3vVUSdI0B7HYFq8k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "921452084576-9j5u6g4kp9ut5nt2ankaalso19esft5a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

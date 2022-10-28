@@ -6,12 +6,14 @@
     <string name="menu_addFishingSpot">Add</string>
     <string name="menu_cancelFishingSpot">Cancel</string>
     <string name="save_fishingspot"> Save Fishing Spot </string>
+    <string name="update_fishingspot"> Update Fishing Spot </string>
     <string name="button_addImage"> Add Image </string>
     <string name="select_fishingspot_image">Select placemark image</string>
     <string name="change_fishingspot_image">Change fishingspot image</string>
     <string name="take_fishingspot_image"> Take Picture </string>
     <string name="take_new_fishingspot_image"> Take New Picture </string>
     <string name="button_location">Set Location</string>
+    <string name="button_update_location">Update Location</string>
     <string name="title_activity_map">MapActivity</string>ß
 
     <string name="summaryTitle">Welcome User</string>
