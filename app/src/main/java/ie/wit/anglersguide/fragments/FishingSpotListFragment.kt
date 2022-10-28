@@ -124,6 +124,11 @@ class FishingSpotListFragment: Fragment(), FishingSpotListener{
         startActivityForResult(launcherIntent,0)
     }
 
+    override fun onResume() {
+        fragBinding.recyclerView.adapter = FishingSpotAdapter(app.fishingspots.findAll(), this)
+        super.onResume()
+    }
+
     private fun registerRefreshCallback() {
         refreshIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
