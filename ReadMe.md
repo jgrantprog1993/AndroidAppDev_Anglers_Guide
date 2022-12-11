@@ -10,7 +10,6 @@
 - Show Favs on Map
 
 ## Items to Fix
-- Display on View
 - Display on Map
 
 # __Angler's Guide App__ Ass1_Release

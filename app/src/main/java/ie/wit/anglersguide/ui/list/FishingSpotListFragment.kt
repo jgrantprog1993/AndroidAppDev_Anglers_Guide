@@ -57,7 +57,7 @@ class FishingSpotListFragment: Fragment(), FishingSpotListener {
         super.onCreate(savedInstanceState)
     }
 
-    @SuppressLint("UseRequireInsteadOfGet")
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -155,7 +155,14 @@ class FishingSpotListFragment: Fragment(), FishingSpotListener {
 
     override fun onResume() {
         super.onResume()
-        fishingSpotListViewModel.load()
+        showLoader(loader, "Downloading FishingSpots")
+        loggedInViewModel.liveFirebaseUser.observe(viewLifecycleOwner, Observer { firebaseUser ->
+            if (firebaseUser != null) {
+                fishingSpotListViewModel.liveFirebaseUser.value = firebaseUser
+                fishingSpotListViewModel.load()
+            }
+        })
+        //hideLoader(loader)
     }
 
     override fun onDestroyView() {
