@@ -71,7 +71,7 @@ class FishingSpotAdapter constructor(private var fishingspots: MutableList<Fishi
 
             binding.fishingspotTitle.text = fishingspot.title
             binding.description.text = fishingspot.description
-            Picasso.get().load(fishingspot.image).resize(200,200).into(binding.imageIcon)
+//            Picasso.get().load(fishingspot.image).resize(200,200).into(binding.imageIcon)
 
 
         }
