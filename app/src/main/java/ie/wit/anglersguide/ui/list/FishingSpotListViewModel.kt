@@ -26,10 +26,10 @@ class FishingSpotListViewModel : ViewModel() {
         try {
             //DonationManager.findAll(liveFirebaseUser.value?.email!!, donationsList)
             FirebaseDBManager.findAll(liveFirebaseUser.value?.uid!!,fishingSpotsList)
-            Timber.i("Report Load Success : ${fishingSpotsList.value.toString()}")
+            Timber.i("Load Success : ${fishingSpotsList.value.toString()}")
         }
         catch (e: Exception) {
-            Timber.i("Report Load Error : $e.message")
+            Timber.i("Load Error : $e.message")
         }
     }
 
