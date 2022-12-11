@@ -6,37 +6,10 @@
     app:startDestination="@id/fishingSpotListFragment">
 
     <fragment
-        android:id="@+id/summariseFragment"
-        android:name="ie.wit.anglersguide.fragments.SummariseFragment"
-        android:label="Summarise Session"
-        tools:layout="@layout/fragment_summarise" >
-        <action
-            android:id="@+id/action_summariseFragment_to_fishingSpotListFragment"
-            app:destination="@id/fishingSpotListFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:launchSingleTop="true"
-            app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_summariseFragment_to_mapAllFishingSpotsFragment"
-            app:destination="@id/mapAllFishingSpotsFragment" />
-        <action
-            android:id="@+id/action_summariseFragment_to_fishingSpotFragment"
-            app:destination="@id/fishingSpotFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
-    </fragment>
-    <fragment
         android:id="@+id/fishingSpotListFragment"
-        android:name="ie.wit.anglersguide.fragments.FishingSpotListFragment"
+        android:name="ie.wit.anglersguide.ui.list.FishingSpotListFragment"
         android:label="List of FishingSpots"
         tools:layout="@layout/fragment_fishing_spot_list" >
-        <action
-            android:id="@+id/action_fishingSpotListFragment_to_summariseFragment"
-            app:destination="@id/summariseFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_fishingSpotListFragment_to_mapAllFishingSpotsFragment"
             app:destination="@id/mapAllFishingSpotsFragment" />
@@ -46,33 +19,30 @@
     </fragment>
     <fragment
         android:id="@+id/mapAllFishingSpotsFragment"
-        android:name="ie.wit.anglersguide.MapAllFishingSpotsFragment"
+        android:name="ie.wit.anglersguide.ui.mapAll.MapAllFishingSpotsFragment"
         android:label="Explore FishingSpots"
         tools:layout="@layout/fragment_map_all_fishing_spots" >
         <action
             android:id="@+id/action_mapAllFishingSpotsFragment_to_fishingSpotListFragment"
             app:destination="@id/fishingSpotListFragment" />
         <action
-            android:id="@+id/action_mapAllFishingSpotsFragment_to_summariseFragment"
-            app:destination="@id/summariseFragment" />
-        <action
             android:id="@+id/action_mapAllFishingSpotsFragment_to_fishingSpotFragment"
             app:destination="@id/fishingSpotFragment" />
     </fragment>
     <fragment
         android:id="@+id/fishingSpotFragment"
-        android:name="ie.wit.anglersguide.fragments.FishingSpotFragment"
+        android:name="ie.wit.anglersguide.ui.activity.FishingSpotFragment"
         android:label="@string/action_addFishingSpot"
         android:layout="@layout/fragment_add_fishing_spot">
-        <action
-            android:id="@+id/action_fishingSpotFragment_to_summariseFragment"
-            app:destination="@id/summariseFragment" />
         <action
             android:id="@+id/action_fishingSpotFragment_to_mapAllFishingSpotsFragment"
             app:destination="@id/mapAllFishingSpotsFragment" />
         <action
             android:id="@+id/action_fishingSpotFragment_to_fishingSpotListFragment"
-            app:destination="@id/fishingSpotListFragment"
-            app:popUpToInclusive="true" />
+            app:destination="@id/fishingSpotListFragment" />
+        <argument
+            android:name="fishingspotId"
+            app:argType="string"
+          />
     </fragment>
 </navigation>
