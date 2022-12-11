@@ -1,5 +1,19 @@
-# __Angler's Guide App__
+# __Angler's Guide App__ Ass2_Release
+## New Features
+- MVVM Architecture
 
+## Features to ADD
+- Swipe to Edit
+- Google Sign-in Auth
+- Filtering Cards view
+- Mark As Fav
+- Show Favs on Map
+
+## Items to Fix
+- Display on View
+- Display on Map
+
+# __Angler's Guide App__ Ass1_Release
 __This is an app developed in Kotlin (Android Studio)__
 ![img.png](img.png)
 ![img_1.png](img_1.png)

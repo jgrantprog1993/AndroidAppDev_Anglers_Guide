@@ -21,18 +21,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="false"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/nav_drawer_menu">
-
-        <Button
-            android:id="@+id/logoutbutton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="8dp"
-            android:text="Log Out" />
-
-
-    </com.google.android.material.navigation.NavigationView>
+        app:menu="@menu/nav_drawer_menu"/>
 
 
 </androidx.drawerlayout.widget.DrawerLayout>

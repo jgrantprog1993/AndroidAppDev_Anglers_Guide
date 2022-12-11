@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
+import ie.wit.anglersguide.R
 import ie.wit.anglersguide.databinding.CardFishingspotBinding
 import ie.wit.anglersguide.models.FishingSpotModel
 import timber.log.Timber.i
@@ -24,6 +25,7 @@ class FishingSpotAdapter constructor(private var fishingspots: MutableList<Fishi
     private lateinit var removedItem: FishingSpotModel
     private lateinit var fishingspot: FishingSpotModel
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         val binding = CardFishingspotBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
@@ -35,33 +37,43 @@ class FishingSpotAdapter constructor(private var fishingspots: MutableList<Fishi
         holder.bind(fishingspot, listener)
     }
 
+    fun removeAt(position: Int) {
+        fishingspots.removeAt(position)
+        notifyItemRemoved(position)
+    }
 
     override fun getItemCount(): Int = fishingspots.size
 
-    fun removeItem(viewMainHolder: RecyclerView.ViewHolder){
-        removedPosition = viewMainHolder.adapterPosition
-        removedItem = fishingspots[viewMainHolder.adapterPosition]
-        val removedItemTitle = fishingspots[viewMainHolder.adapterPosition].title
-
-        fishingspots.removeAt(viewMainHolder.adapterPosition)
-        notifyItemRemoved(viewMainHolder.adapterPosition)
-
-        Snackbar.make(viewMainHolder.itemView, "$removedItemTitle  - DELETED FROM LIST.", Snackbar.LENGTH_LONG)
-            //.setAction("UNDO"){
-            //i("This is the removed iterm $removedItem")
-            //fishingspots.add(removedItem.copy())
-            //notifyItemInserted(removedPosition)
-            .show()
-    }
+//    fun removeItem(viewMainHolder: RecyclerView.ViewHolder){
+//        removedPosition = viewMainHolder.adapterPosition
+//        removedItem = fishingspots[viewMainHolder.adapterPosition]
+//        val removedItemTitle = fishingspots[viewMainHolder.adapterPosition].title
+//
+//        fishingspots.removeAt(viewMainHolder.adapterPosition)
+//        notifyItemRemoved(viewMainHolder.adapterPosition)
+//
+//        Snackbar.make(viewMainHolder.itemView, "$removedItemTitle  - DELETED FROM LIST.", Snackbar.LENGTH_LONG)
+//            //.setAction("UNDO"){
+//            //i("This is the removed iterm $removedItem")
+//            //fishingspots.add(removedItem.copy())
+//            //notifyItemInserted(removedPosition)
+//            .show()
+//    }
 
     class MainHolder(private val binding : CardFishingspotBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(fishingspot: FishingSpotModel, listener: FishingSpotListener) {
+            binding.root.tag = fishingspot
+
+            binding.imageIcon.setImageResource(R.mipmap.ic_launcher_round)
+            binding.root.setOnClickListener { listener.onFishingSpotClick(fishingspot) }
+
             binding.fishingspotTitle.text = fishingspot.title
             binding.description.text = fishingspot.description
             Picasso.get().load(fishingspot.image).resize(200,200).into(binding.imageIcon)
-            binding.root.setOnClickListener { listener.onFishingSpotClick(fishingspot) }
+
+
         }
     }
 
