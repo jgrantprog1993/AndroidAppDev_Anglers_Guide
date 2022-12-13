@@ -110,7 +110,6 @@ class FishingSpotFragment : Fragment() {
             var takenImage = data?.data!!.toString()
             i("Taken image - $takenImage")
 
-
            // val bos = ByteArrayOutputStream()
             //takenImage.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos)
             //var pathImage: String
@@ -146,7 +145,7 @@ class FishingSpotFragment : Fragment() {
                 .load(fishingspot.image)
                 .into(_fragBinding?.fishingspotImage)
         }
-        fragBinding.fishingspotvm = fishingSpotViewModel
+
     }
 
     fun setButtonListener(layout: FragmentAddFishingSpotBinding) {
