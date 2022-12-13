@@ -149,7 +149,7 @@ class FishingSpotListFragment: Fragment(), FishingSpotListener {
     }
 
     override fun onFishingSpotClick(fishingspot: FishingSpotModel) {
-        val action = FishingSpotListFragmentDirections.actionFishingSpotListFragmentToFishingSpotFragment(fishingspot.uid!!)
+        val action = FishingSpotListFragmentDirections.actionFishingSpotListFragmentToFishingSpotDetailFragment(fishingspot.uid!!)
         findNavController().navigate(action)
     }
 
