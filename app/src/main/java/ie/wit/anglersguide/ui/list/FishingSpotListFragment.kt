@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -112,7 +113,15 @@ class FishingSpotListFragment: Fragment(), FishingSpotListener {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_main, menu)
 
+                val item = menu.findItem(R.id.toggleFishingSpots) as MenuItem
+                item.setActionView(R.layout.togglebutton_layout)
+                val toggleFishingSpots: SwitchCompat = item.actionView!!.findViewById(R.id.toggleButton)
+                toggleFishingSpots.isChecked = false
 
+                toggleFishingSpots.setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked) fishingSpotListViewModel.loadAll()
+                    else fishingSpotListViewModel.load()
+                }
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -127,7 +136,7 @@ class FishingSpotListFragment: Fragment(), FishingSpotListener {
 
         fun render(fishingSpots: List<FishingSpotModel>) {
             fragBinding.recyclerView.adapter =
-                FishingSpotAdapter(fishingSpots as MutableList<FishingSpotModel>, this)
+                FishingSpotAdapter(fishingSpots as MutableList<FishingSpotModel>, this, fishingSpotListViewModel.readOnly.value!!)
             if (fishingSpots.isEmpty()) {
                 fragBinding.recyclerView.visibility = View.GONE
                 fragBinding.FishingSpotsNotFound.visibility = View.VISIBLE
@@ -150,7 +159,9 @@ class FishingSpotListFragment: Fragment(), FishingSpotListener {
 
     override fun onFishingSpotClick(fishingspot: FishingSpotModel) {
         val action = FishingSpotListFragmentDirections.actionFishingSpotListFragmentToFishingSpotDetailFragment(fishingspot.uid!!)
-        findNavController().navigate(action)
+        if(!fishingSpotListViewModel.readOnly.value!!) {
+            findNavController().navigate(action)
+        }
     }
 
     override fun onResume() {

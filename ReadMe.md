@@ -1,15 +1,17 @@
 # __Angler's Guide App__ Ass2_Release
 ## New Features
 - MVVM Architecture
-
-## Features to ADD
 - Swipe to Edit
 - Google Sign-in Auth
+- Toggle Button on List view for logged in User locations / All locations
+
+## Features to ADD
 - Filtering Cards view
 - Mark As Fav
 - Show Favs on Map
 
 ## Items to Fix
+- Map
 - Display on Map
 
 # __Angler's Guide App__ Ass1_Release

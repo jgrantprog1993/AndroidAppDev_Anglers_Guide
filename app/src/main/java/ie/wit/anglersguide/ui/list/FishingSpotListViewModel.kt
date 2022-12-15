@@ -20,9 +20,23 @@ class FishingSpotListViewModel : ViewModel() {
 
     var liveFirebaseUser = MutableLiveData<FirebaseUser>()
 
+    var readOnly = MutableLiveData(false)
+
     init { load() }
 
+    fun loadAll() {
+        try {
+            readOnly.value = true
+            FirebaseDBManager.findAll(fishingSpotsList)
+            Timber.i("Report LoadAll Success : ${fishingSpotsList.value.toString()}")
+        }
+        catch (e: Exception) {
+            Timber.i("Report LoadAll Error : $e.message")
+        }
+    }
+
     fun load() {
+        readOnly.value = false
         try {
             //DonationManager.findAll(liveFirebaseUser.value?.email!!, donationsList)
             FirebaseDBManager.findAll(liveFirebaseUser.value?.uid!!,fishingSpotsList)

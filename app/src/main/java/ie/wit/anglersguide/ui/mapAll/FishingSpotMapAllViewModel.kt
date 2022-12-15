@@ -25,14 +25,25 @@ class FishingSpotMapAllViewModel : ViewModel() {
     init {
         load()
     }
-
-    fun load() {
+    fun loadAll() {
         try {
-       FirebaseDBManager.findAll(fishingSpotList)
-            Timber.i("Find Load Success : ${fishingSpotList.value.toString()}")
+
+            FirebaseDBManager.findAll(fishingSpotList)
+            Timber.i("Report LoadAll Success : ${fishingSpotList.value.toString()}")
         }
         catch (e: Exception) {
-            Timber.i("Find Load Error : $e.message")
+            Timber.i("Report LoadAll Error : $e.message")
+        }
+    }
+    fun load() {
+
+        try {
+            //DonationManager.findAll(liveFirebaseUser.value?.email!!, donationsList)
+            FirebaseDBManager.findAll(liveFirebaseUser.value?.uid!!,fishingSpotList)
+            Timber.i("Load Success : ${fishingSpotList.value.toString()}")
+        }
+        catch (e: Exception) {
+            Timber.i("Load Error : $e.message")
         }
     }
 }

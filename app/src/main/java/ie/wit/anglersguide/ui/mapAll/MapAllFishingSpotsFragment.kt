@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -32,28 +33,32 @@ import ie.wit.anglersguide.ui.activity.FishingSpotListViewModel
 import timber.log.Timber.i
 import timber.log.Timber
 
-class MapAllFishingSpotsFragment : Fragment(), OnMapReadyCallback,
-                                            GoogleMap.OnMarkerClickListener{
+class MapAllFishingSpotsFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener{
     private lateinit var mMap : GoogleMap
     private var mapReady = false
     private lateinit var fishingspots: List<FishingSpotModel>
 
-    // private var _fragBinding: FragmentMapAllFishingSpotsBinding? = null
-    // private val fragBinding get() = _fragBinding!!
+    private var _fragBinding: FragmentMapAllFishingSpotsBinding? = null
+    private val fragBinding get() = _fragBinding!!
+
     private lateinit var fishingSpotMapAllViewModel: FishingSpotMapAllViewModel
-    private val callback = OnMapReadyCallback { googleMap ->
-        fishingSpotMapAllViewModel.map = googleMap
-        val loc = LatLng(52.245696, -7.1234)
+//    private val callback = OnMapReadyCallback { googleMap ->
+//        fishingSpotMapAllViewModel.map = googleMap
+//        val loc = LatLng(52.245696, -7.1234)
+//
+//        fishingSpotMapAllViewModel.map.uiSettings.isZoomControlsEnabled = true
+//        fishingSpotMapAllViewModel.map.uiSettings.isMyLocationButtonEnabled = true
+//        fishingSpotMapAllViewModel.map.addMarker(MarkerOptions().position(loc).title("you are here !"))
+//        fishingSpotMapAllViewModel.map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc,14f))
+//
+//    }
+//    private val loggedInViewModel : LoggedInViewModel by activityViewModels()
+//
+//    private lateinit var map: GoogleMap
 
-        fishingSpotMapAllViewModel.map.uiSettings.isZoomControlsEnabled = true
-        fishingSpotMapAllViewModel.map.uiSettings.isMyLocationButtonEnabled = true
-        fishingSpotMapAllViewModel.map.addMarker(MarkerOptions().position(loc).title("you are here !"))
-        fishingSpotMapAllViewModel.map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc,14f))
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
-    private val loggedInViewModel : LoggedInViewModel by activityViewModels()
-
-    private lateinit var map: GoogleMap
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,38 +70,38 @@ class MapAllFishingSpotsFragment : Fragment(), OnMapReadyCallback,
 //        val root = fragBinding.root
 //        setupMenu()
 //
-        fishingSpotMapAllViewModel =
-            ViewModelProvider(this)[FishingSpotMapAllViewModel::class.java]
-//        fishingSpotMapAllViewModel.observableMapsSpots.observe(
-//            viewLifecycleOwner,
-//            Observer { fishingspots ->
-//                fishingspots?.let {
-//                    render(fishingspots as ArrayList<FishingSpotModel>)
-//                }
-//            })
+        fishingSpotMapAllViewModel = ViewModelProvider(this)[FishingSpotMapAllViewModel::class.java]
+        fishingSpotMapAllViewModel.observableMapsSpots.observe(
+            viewLifecycleOwner,
+            Observer { fishingspots ->
+                fishingspots?.let {
+                    render(fishingspots as ArrayList<FishingSpotModel>)
+                }
+            })
 //        return root mapAllMarkers
         var rootView =  inflater.inflate(R.layout.fragment_map_all_fishing_spots, container, false)
         val mapFragment = childFragmentManager.findFragmentById(R.id.mapAllMarkers) as? SupportMapFragment
         mapFragment?.getMapAsync {
-                googleMap -> mMap = googleMap
-
+                googleMap ->
+            mMap = googleMap
             mapReady = true
+            onMapReady(mMap)
             updateMap()
         }
         return rootView
 
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
-        fishingSpotMapAllViewModel.fishingSpotList.observe(viewLifecycleOwner,
-        Observer { fishingspots -> this.fishingspots = fishingspots
-        updateMap()
+        fishingSpotMapAllViewModel.fishingSpotList.observe(viewLifecycleOwner, Observer {
+            fishingspots -> this.fishingspots = fishingspots
+            updateMap()
         })
     }
     private fun render(fishingSpots: List<FishingSpotModel>) {
-//            fragBinding.mapFragment.adapter =
+//            _fragBinding.mapFragment.adapter =
 //            FishingSpotAdapter(fishingSpots as MutableList<FishingSpotModel>, this)
 //        if (fishingSpots.isEmpty()) {
 //            mapFragment.visibility = View.GONE
@@ -107,9 +112,8 @@ class MapAllFishingSpotsFragment : Fragment(), OnMapReadyCallback,
 //        }
     }
        override fun onMapReady(googleMap: GoogleMap) {
-            map = googleMap!!
-//          // i(fishingSpotMapAllViewModel.fishingSpotList)
-//            for (location in fishingSpotMapAllViewModel.fishingSpotList) {
+//            mMap = googleMap!!
+//            for (location in fishingspots) {
 //                val loc = LatLng(location.lat, location.lng)
 //                val locTitle = location.title
 //                val locLat = location.lat
@@ -119,8 +123,8 @@ class MapAllFishingSpotsFragment : Fragment(), OnMapReadyCallback,
 //                    .snippet("Lat, Lng : $locLat, $locLng")
 //                    .draggable(true)
 //                    .position(loc)
-//                map.addMarker(options)
-//                map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, location.zoom))
+//                mMap.addMarker(options)
+//                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, location.zoom))
 //
 //            }
       }
@@ -179,7 +183,15 @@ class MapAllFishingSpotsFragment : Fragment(), OnMapReadyCallback,
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_main, menu)
 
+                val item = menu.findItem(R.id.toggleFishingSpots) as MenuItem
+                item.setActionView(R.layout.togglebutton_layout)
+                val toggleFishingSpots: SwitchCompat = item.actionView!!.findViewById(R.id.toggleButton)
+                toggleFishingSpots.isChecked = false
 
+                toggleFishingSpots.setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked) fishingSpotMapAllViewModel.loadAll()
+                    else fishingSpotMapAllViewModel.load()
+                }
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
