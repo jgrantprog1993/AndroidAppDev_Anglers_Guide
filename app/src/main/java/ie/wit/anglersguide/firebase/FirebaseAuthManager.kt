@@ -93,6 +93,7 @@ class FirebaseAuthManager(application: Application) {
     fun logOut() {
         Timber.i("logOut() ")
         firebaseAuth!!.signOut()
+        googleSignInClient.value!!.signOut()
         loggedOut.postValue(true)
         errorStatus.postValue(false)
     }
