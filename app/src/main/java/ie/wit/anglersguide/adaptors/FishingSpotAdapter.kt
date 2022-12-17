@@ -2,10 +2,12 @@ package ie.wit.anglersguide.adaptors
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
-import ie.wit.anglersguide.R
+import com.squareup.picasso.Picasso
 import ie.wit.anglersguide.databinding.CardFishingspotBinding
 import ie.wit.anglersguide.models.FishingSpotModel
+import ie.wit.anglersguide.utils.customTransformation
 
 interface FishingSpotListener {
 
@@ -65,13 +67,17 @@ class FishingSpotAdapter constructor(private var fishingspots: MutableList<Fishi
         fun bind(fishingspot: FishingSpotModel, listener: FishingSpotListener) {
             binding.root.tag = fishingspot
 
-            binding.imageIcon.setImageResource(R.mipmap.ic_launcher_round)
+            Picasso.get().load(fishingspot.profilepic.toUri())
+                .resize(200, 200)
+                .transform(customTransformation())
+                .centerCrop()
+                .into(binding.imageIcon)
             binding.root.setOnClickListener { listener.onFishingSpotClick(fishingspot) }
 
 
             binding.fishingspotTitle.text = fishingspot.title
             binding.description.text = fishingspot.description
-//            Picasso.get().load(fishingspot.image).resize(200,200).into(binding.imageIcon)
+
 //            binding.executePendingBindings()
 
 

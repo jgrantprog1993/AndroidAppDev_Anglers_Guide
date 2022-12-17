@@ -1,6 +1,5 @@
 package ie.wit.anglersguide.models
 
-import android.net.Uri
 import android.os.Parcelable
 import com.google.firebase.database.Exclude
 import kotlinx.parcelize.Parcelize
@@ -13,6 +12,7 @@ data class FishingSpotModel(var uid: String? = "",
                           var lat : Double = 0.0,
                           var lng: Double = 0.0,
                           var zoom: Float = 0f,
+                            var profilepic: String = "",
                             var email: String = "joe@bloggs.com")
                             : Parcelable
 {
@@ -26,6 +26,7 @@ data class FishingSpotModel(var uid: String? = "",
             "lat" to lat,
             "lng" to lng,
             "zoom" to zoom,
+            "profilepic" to profilepic,
             "email" to email
         )
     }

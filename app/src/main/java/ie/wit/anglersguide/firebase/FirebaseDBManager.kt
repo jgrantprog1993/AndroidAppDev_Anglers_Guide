@@ -3,10 +3,8 @@ package ie.wit.anglersguide.firebase
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
-import com.google.firebase.database.FirebaseDatabase
 import ie.wit.anglersguide.models.FishingSpotModel
 import ie.wit.anglersguide.models.FishingSpotStore
-
 import timber.log.Timber
 
 object FirebaseDBManager : FishingSpotStore {
@@ -107,5 +105,26 @@ object FirebaseDBManager : FishingSpotStore {
         childUpdate["user-fishingspots/$userid/$fishingspotid"] = fishingspotValues
 
         database.updateChildren(childUpdate)
+    }
+
+    fun updateImageRef(userid: String,imageUri: String) {
+
+        val userDonations = database.child("user-donations").child(userid)
+        val allDonations = database.child("donations")
+
+        userDonations.addListenerForSingleValueEvent(
+            object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {}
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    snapshot.children.forEach {
+                        //Update Users imageUri
+                        it.ref.child("profilepic").setValue(imageUri)
+                        //Update all fishingspots that match 'it'
+                        val donation = it.getValue(FishingSpotModel::class.java)
+                        allDonations.child(donation!!.uid!!)
+                            .child("profilepic").setValue(imageUri)
+                    }
+                }
+            })
     }
 }
