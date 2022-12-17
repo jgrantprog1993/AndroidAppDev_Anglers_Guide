@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import ie.wit.anglersguide.R
+import ie.wit.anglersguide.firebase.FirebaseImageManager
 import timber.log.Timber
 
 class FirebaseAuthManager(application: Application) {
@@ -15,6 +16,7 @@ class FirebaseAuthManager(application: Application) {
     private var application: Application? = null
 
     var firebaseAuth: FirebaseAuth? = null
+    var FirebaseImageManager: FirebaseImageManager? = null
     var liveFirebaseUser = MutableLiveData<FirebaseUser>()
     var loggedOut = MutableLiveData<Boolean>()
     var errorStatus = MutableLiveData<Boolean>()
@@ -28,12 +30,14 @@ class FirebaseAuthManager(application: Application) {
             liveFirebaseUser.postValue(firebaseAuth!!.currentUser)
             loggedOut.postValue(false)
             errorStatus.postValue(false)
+            FirebaseImageManager?.checkStorageForExistingProfilePic(
+                firebaseAuth!!.currentUser!!.uid)
         }
         configureGoogleSignIn()
     }
 
     fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        Timber.i( "DonationX firebaseAuthWithGoogle:" + acct.id!!)
+        Timber.i( "AnglersGuide firebaseAuthWithGoogle:" + acct.id!!)
 
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         firebaseAuth!!.signInWithCredential(credential)

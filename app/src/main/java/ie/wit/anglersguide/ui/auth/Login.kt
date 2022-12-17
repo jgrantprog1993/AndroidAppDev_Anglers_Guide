@@ -8,17 +8,16 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import ie.wit.anglersguide.R
-import ie.wit.anglersguide.ui.home.Home
-import timber.log.Timber
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseUser
+import ie.wit.anglersguide.R
 import ie.wit.anglersguide.databinding.LoginBinding
+import ie.wit.anglersguide.ui.home.Home
+import timber.log.Timber
 
 class Login : AppCompatActivity() {
 
@@ -133,7 +132,7 @@ class Login : AppCompatActivity() {
                             Snackbar.make(loginBinding.loginLayout, "Authentication Failed.",
                                 Snackbar.LENGTH_SHORT).show()
                         }
-                        Timber.i("DonationX Google Result $result.data")
+                        Timber.i("AnglersGuide Google Result $result.data")
                     }
                     RESULT_CANCELED -> {
 
