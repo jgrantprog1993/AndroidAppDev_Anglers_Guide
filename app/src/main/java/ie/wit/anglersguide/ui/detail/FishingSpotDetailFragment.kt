@@ -1,21 +1,19 @@
 package ie.wit.anglersguide.ui.detail
 
-import ie.wit.anglersguide.ui.detail.FishingSpotDetailViewModel
 import LoggedInViewModel
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import ie.wit.anglersguide.ui.activity.FishingSpotListViewModel
-
 import ie.wit.anglersguide.databinding.FragmentUpdateFishingSpotBinding
+import ie.wit.anglersguide.ui.activity.FishingSpotListViewModel
 import timber.log.Timber
 
 
@@ -37,6 +35,7 @@ class FishingSpotDetailFragment : Fragment() {
         fishingSpotDetailViewModel = ViewModelProvider(this).get(FishingSpotDetailViewModel::class.java)
         fishingSpotDetailViewModel.observableFishingSpot.observe(viewLifecycleOwner, Observer { render() })
         Toast.makeText(context,"FishingSpot ID Selected : ${args.fishingspotId}", Toast.LENGTH_LONG).show()
+
         fragBinding.editFishingSpotButton.setOnClickListener {
             fishingSpotDetailViewModel.updateFishingSpot(loggedInViewModel.liveFirebaseUser.value?.uid!!,
                 args.fishingspotId, fragBinding.fishingspotvm?.observableFishingSpot!!.value!!)

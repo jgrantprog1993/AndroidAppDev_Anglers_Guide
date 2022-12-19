@@ -4,6 +4,8 @@
 - Swipe to Edit
 - Google Sign-in Auth
 - Toggle Button on List view for logged in User locations / All locations
+- Show on Map Users locations on map (via toggle)
+- Show all locations on map (via toggle)
 
 ## Features to ADD
 - Filtering Cards view
@@ -11,9 +13,12 @@
 - Show Favs on Map
 
 ## Items to Fix
-- Map
-- Display on Map
+- Set Location
 
+
+## References
+ - Color for Markers (https://stackoverflow.com/questions/49566693/how-to-change-the-google-maps-marker-color-to-grey-in-android)
+ - Clear Markers from Map (https://stackoverflow.com/questions/16853182/android-how-to-remove-all-markers-from-google-map-v2)
 # __Angler's Guide App__ Ass1_Release
 __This is an app developed in Kotlin (Android Studio)__
 ![img.png](img.png)

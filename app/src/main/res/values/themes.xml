@@ -27,6 +27,7 @@
 
     <style name="Theme.AnglersGuide.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+
     <!-- START Firebase Resources-->
     <!-- Activity with no Title -->
     <style name="ThemeOverlay.MyNoTitleActivity" parent="Theme.AnglersGuide">

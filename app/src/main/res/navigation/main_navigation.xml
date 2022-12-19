@@ -56,4 +56,5 @@
             android:name="fishingspotId"
             app:argType="string" />
     </fragment>
+
 </navigation>
