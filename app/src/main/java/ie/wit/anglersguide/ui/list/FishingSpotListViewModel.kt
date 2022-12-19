@@ -7,7 +7,6 @@ import com.google.firebase.auth.FirebaseUser
 import ie.wit.anglersguide.firebase.FirebaseDBManager
 import ie.wit.anglersguide.models.FishingSpotModel
 import timber.log.Timber
-import java.lang.Exception
 
 
 class FishingSpotListViewModel : ViewModel() {
@@ -38,7 +37,7 @@ class FishingSpotListViewModel : ViewModel() {
     fun load() {
         readOnly.value = false
         try {
-            //DonationManager.findAll(liveFirebaseUser.value?.email!!, donationsList)
+
             FirebaseDBManager.findAll(liveFirebaseUser.value?.uid!!,fishingSpotsList)
             Timber.i("Load Success : ${fishingSpotsList.value.toString()}")
         }

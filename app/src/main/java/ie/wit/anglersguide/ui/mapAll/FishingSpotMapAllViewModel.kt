@@ -9,14 +9,13 @@ import ie.wit.anglersguide.firebase.FirebaseDBManager
 import ie.wit.anglersguide.models.FishingSpotModel
 import ie.wit.anglersguide.models.Location
 import timber.log.Timber
-import java.lang.Exception
 
 class FishingSpotMapAllViewModel : ViewModel() {
 
-    val fishingSpotList = MutableLiveData<List<FishingSpotModel>>()
+    val fishingSpotsList = MutableLiveData<List<FishingSpotModel>>()
 
     val observableMapsSpots: LiveData<List<FishingSpotModel>>
-        get() = fishingSpotList
+        get() = fishingSpotsList
 
     var liveFirebaseUser = MutableLiveData<FirebaseUser>()
     lateinit var map: GoogleMap
@@ -28,8 +27,8 @@ class FishingSpotMapAllViewModel : ViewModel() {
     fun loadAll() {
         try {
 
-            FirebaseDBManager.findAll(fishingSpotList)
-            Timber.i("Report LoadAll Success : ${fishingSpotList.value.toString()}")
+            FirebaseDBManager.findAll(fishingSpotsList)
+            Timber.i("Report LoadAll Success : ${fishingSpotsList.value.toString()}")
         }
         catch (e: Exception) {
             Timber.i("Report LoadAll Error : $e.message")
@@ -38,9 +37,9 @@ class FishingSpotMapAllViewModel : ViewModel() {
     fun load() {
 
         try {
-            //DonationManager.findAll(liveFirebaseUser.value?.email!!, donationsList)
-            FirebaseDBManager.findAll(liveFirebaseUser.value?.uid!!,fishingSpotList)
-            Timber.i("Load Success : ${fishingSpotList.value.toString()}")
+
+            FirebaseDBManager.findAll(liveFirebaseUser.value?.uid!!,fishingSpotsList)
+            Timber.i("Load Success : ${fishingSpotsList.value.toString()}")
         }
         catch (e: Exception) {
             Timber.i("Load Error : $e.message")

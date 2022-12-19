@@ -80,10 +80,10 @@
     <string name="emailpassword_title_text">Please Login Below</string>
 
 
-
     <string name="delete">Delete</string>
     <string name="update">Update</string>
-
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
