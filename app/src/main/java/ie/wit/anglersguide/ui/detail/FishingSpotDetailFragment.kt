@@ -43,7 +43,7 @@ class FishingSpotDetailFragment : Fragment() {
         }
 
         fragBinding.deleteFishingSpotButton.setOnClickListener {
-            fishingSpotListViewModel.delete(loggedInViewModel.liveFirebaseUser.value?.email!!,
+            fishingSpotDetailViewModel.deleteFishingSpot(loggedInViewModel.liveFirebaseUser.value?.uid!!,
                 fishingSpotDetailViewModel.observableFishingSpot.value?.uid!!)
             findNavController().navigateUp()
         }
@@ -72,3 +72,4 @@ class FishingSpotDetailFragment : Fragment() {
         _fragBinding = null
     }
 }
+
