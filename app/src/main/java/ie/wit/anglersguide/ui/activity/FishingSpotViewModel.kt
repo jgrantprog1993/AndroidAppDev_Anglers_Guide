@@ -63,7 +63,7 @@ class FishingSpotViewModel : ViewModel() {
 
     fun updateFishingSpot(userid:String, id: String,fishingSpot: FishingSpotModel) {
         try {
-            //DonationManager.update(email, id, donation)
+
             FirebaseDBManager.update(userid, id, fishingSpot)
             Timber.i("FishingSpot update() Success : $fishingSpot")
         }

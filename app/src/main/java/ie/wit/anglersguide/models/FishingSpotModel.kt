@@ -36,5 +36,5 @@ data class FishingSpotModel(var uid: String? = "",
 
 @Parcelize
 data class Location(var lat: Double = 0.0,
-                    var lng: Double = 0.0,
-                    var zoom: Float = 14f) : Parcelable
+                    var lng: Double = 0.0
+                    ) : Parcelable

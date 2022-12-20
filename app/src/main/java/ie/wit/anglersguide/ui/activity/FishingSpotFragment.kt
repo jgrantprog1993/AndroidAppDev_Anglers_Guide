@@ -1,11 +1,11 @@
 package ie.wit.anglersguide.ui.activity
 
+//import ie.wit.anglersguide.ARG_PARAM1
+//import ie.wit.anglersguide.ARG_PARAM2
 import LoggedInViewModel
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Movie
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.*
@@ -21,12 +21,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
-//import ie.wit.anglersguide.ARG_PARAM1
-//import ie.wit.anglersguide.ARG_PARAM2
 import ie.wit.anglersguide.R
 import ie.wit.anglersguide.databinding.FragmentAddFishingSpotBinding
 import ie.wit.anglersguide.helpers.showImagePicker
@@ -34,8 +31,6 @@ import ie.wit.anglersguide.models.FishingSpotModel
 import ie.wit.anglersguide.models.Location
 import ie.wit.anglersguide.ui.mapAll.MapAllFishingSpotsFragment
 import timber.log.Timber.i
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 
 
 
@@ -53,7 +48,7 @@ class FishingSpotFragment : Fragment() {
     private lateinit var fishingSpotViewModel: FishingSpotViewModel
     var edit = false
     val REQUEST_IMAGE_CAPTURE = 100
-
+    private val location : Location = TODO()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -160,13 +155,12 @@ class FishingSpotFragment : Fragment() {
                     fishingSpotViewModel.addFishingSpot(loggedInViewModel.liveFirebaseUser,
                         FishingSpotModel(title = fishingSpot.title,
                             description = fishingSpot.description,
-                            lat = 0.0, //fishingSpot.lat,
-                            lng = 0.0, //fishingSpot.lng,
-                            zoom = 0f, //fishingSpot.zoom,
+                            lat = location.lat, //fishingSpot.lat,
+                            lng = location.lng, //fishingSpot.lng,
+                            zoom = 14f, //fishingSpot.zoom,
                             email = loggedInViewModel.liveFirebaseUser.value?.email!! )
                     )
-                    //activity?.setResult(AppCompatActivity.RESULT_OK)
-                    //activity?.finish()
+
                     Snackbar
                         .make(it, "Fishing Spot ${fishingSpot.title} Added", Snackbar.LENGTH_LONG)
                         .show()
@@ -224,13 +218,13 @@ class FishingSpotFragment : Fragment() {
         }
 
         _fragBinding?.fishingspotLocation?.setOnClickListener {
-            val location = Location(52.149, -6.9896, 15f)
+            val location = Location(52.149, -6.9896, )
             i ("Set Location Pressed")
 
             if (fishingSpot.zoom != 0f) {
                 location.lat =  fishingSpot.lat
                 location.lng = fishingSpot.lng
-                location.zoom = fishingSpot.zoom
+
             }
             val launcherIntent = Intent(this@FishingSpotFragment.context, MapAllFishingSpotsFragment::class.java)
                 .putExtra("location", location)
@@ -306,7 +300,7 @@ class FishingSpotFragment : Fragment() {
                             i("Location == $location")
                             fishingSpot.lat = location.lat
                             fishingSpot.lng = location.lng
-                            fishingSpot.zoom = location.zoom
+
                         } // end of if
                     }
                     AppCompatActivity.RESULT_CANCELED -> { } else -> { }
@@ -314,5 +308,6 @@ class FishingSpotFragment : Fragment() {
             }
     }
 }
+
 
 

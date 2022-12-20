@@ -16,7 +16,7 @@ class FishingSpotDetailViewModel : ViewModel() {
 
     fun getFishingSpot(userid:String, id: String) {
         try {
-            //DonationManager.findById(email, id, donation)
+
             FirebaseDBManager.findById(userid, id, fishingspot)
             Timber.i("Detail getFishingSpot() Success : ${
                 fishingspot.value.toString()}")
@@ -30,6 +30,17 @@ class FishingSpotDetailViewModel : ViewModel() {
         try {
 
             FirebaseDBManager.update(userid, id, fishingspot)
+            Timber.i("Detail update() Success : $fishingspot")
+        }
+        catch (e: Exception) {
+            Timber.i("Detail update() Error : $e.message")
+        }
+    }
+
+    fun deleteFishingSpot(userid:String, fishingspotid: String) {
+        try {
+
+            FirebaseDBManager.delete(userid, fishingspotid)
             Timber.i("Detail update() Success : $fishingspot")
         }
         catch (e: Exception) {
