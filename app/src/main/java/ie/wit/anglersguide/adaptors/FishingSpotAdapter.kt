@@ -13,6 +13,7 @@ interface FishingSpotListener {
 
 
     fun onFishingSpotClick(fishingspot: FishingSpotModel)
+    fun onQueryTextChange(query: String?): Boolean
 }
 
 class FishingSpotAdapter constructor(private var fishingspots: MutableList<FishingSpotModel>,

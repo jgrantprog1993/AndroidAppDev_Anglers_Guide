@@ -11,7 +11,54 @@ object FirebaseDBManager : FishingSpotStore {
 
     var database: DatabaseReference = FirebaseDatabase.getInstance().reference
 
+    fun findAllFiltered( searchTerm: String, fishingspotsList: MutableLiveData<List<FishingSpotModel>>) {
+        database.child("fishingspots")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.i("Firebase FishingSpot error : ${error.message}")
+                }
 
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val localList = ArrayList<FishingSpotModel>()
+                    val children = snapshot.children
+                    children.forEach {
+                        val fishingspot = it.getValue(FishingSpotModel::class.java)
+                        if (fishingspot?.title?.contains(searchTerm, ignoreCase = true) == true) {
+                            localList.add(fishingspot!!)
+                        }
+                    }
+                    database.child("fishingspots")
+                        .removeEventListener(this)
+
+                    fishingspotsList.value = localList
+                }
+            })
+    }
+
+    fun findAllFiltered(userid: String, searchTerm: String, fishingspotsList: MutableLiveData<List<FishingSpotModel>>) {
+
+        database.child("user-fishingspots").child(userid)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.i("Firebase Fishingspot error : ${error.message}")
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val localList = ArrayList<FishingSpotModel>()
+                    val children = snapshot.children
+                    children.forEach {
+                        val fishingspot = it.getValue(FishingSpotModel::class.java)
+                        if (fishingspot?.title?.contains(searchTerm, ignoreCase = true) == true) {
+                            localList.add(fishingspot!!)
+                        }
+                    }
+                    database.child("user-fishingspots").child(userid)
+                        .removeEventListener(this)
+
+                    fishingspotsList.value = localList
+                }
+            })
+    }
     override fun findAll(fishingspotsList: MutableLiveData<List<FishingSpotModel>>) {
         database.child("fishingspots")
             .addValueEventListener(object : ValueEventListener {
