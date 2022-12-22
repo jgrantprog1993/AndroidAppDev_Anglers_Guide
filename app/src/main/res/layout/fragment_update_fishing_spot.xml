@@ -130,16 +130,25 @@
             android:id="@+id/editFishingSpotButton"
             android:layout_width="206dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:text="@string/update"
-            tools:layout_editor_absoluteY="683dp" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/deleteFishingSpotButton"
+            app:layout_constraintHorizontal_bias="0.444"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3"
+            app:layout_constraintVertical_bias="0.932" />
 
         <Button
             android:id="@+id/deleteFishingSpotButton"
             android:layout_width="206dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
             android:text="@string/delete"
-            tools:layout_editor_absoluteX="206dp"
-            tools:layout_editor_absoluteY="683dp" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView5"
+            app:layout_constraintVertical_bias="0.932" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

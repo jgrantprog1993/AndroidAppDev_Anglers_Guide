@@ -97,44 +97,44 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lat" />
 
-            <Button
-                android:id="@+id/takeImage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="93dp"
-                android:background="@color/colorAccent"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="@string/take_fishingspot_image"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintTop_toTopOf="@+id/description"
-                tools:layout_editor_absoluteX="16dp" />
+<!--            <Button-->
+<!--                android:id="@+id/takeImage"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="93dp"-->
+<!--                android:background="@color/colorAccent"-->
+<!--                android:paddingTop="8dp"-->
+<!--                android:paddingBottom="8dp"-->
+<!--                android:text="@string/take_fishingspot_image"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="16sp"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/description"-->
+<!--                tools:layout_editor_absoluteX="16dp" />-->
 
 
             <Button
                 android:id="@+id/chooseImage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="168dp"
                 android:background="@color/colorAccent"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:text="@string/button_addImage"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@+id/btnAdd"
-                app:layout_constraintTop_toBottomOf="@+id/takeImage"
-                app:layout_constraintVertical_bias="0.84"
+                app:layout_constraintTop_toBottomOf="@+id/description"
                 tools:layout_editor_absoluteX="0dp" />
 
             <ImageView
                 android:id="@+id/fishingspotImage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="68dp"
                 app:layout_constraintBottom_toTopOf="@+id/chooseImage"
-                app:layout_constraintTop_toBottomOf="@+id/takeImage"
-                app:srcCompat="@mipmap/ic_launcher"
-                tools:layout_editor_absoluteX="16dp" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/description"
+                app:srcCompat="@mipmap/ic_launcher" />
 
             <Button
                 android:id="@+id/btnAdd"
@@ -148,7 +148,8 @@
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/takeImage"
+                app:layout_constraintTop_toBottomOf="@+id/chooseImage"
+                app:layout_constraintVertical_bias="0.122"
                 tools:layout_editor_absoluteX="0dp" />
 
             <TextView

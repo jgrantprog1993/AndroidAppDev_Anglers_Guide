@@ -92,6 +92,8 @@ class FishingSpotFragment : Fragment() {
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireContext())
 
+        fragBinding.fishingspotTitle.text.clear();
+        fragBinding.description.text.clear();
 
         Log.d("Debug:", CheckPermission().toString())
         Log.d("Debug:", isLocationEnabled().toString())
@@ -120,13 +122,13 @@ class FishingSpotFragment : Fragment() {
             if (isLocationEnabled()) {
                 fusedLocationProviderClient.lastLocation.addOnCompleteListener { task ->
                     var location: android.location.Location? = task.result
-                    if (location == null) {
+
                         NewLocationData()
-                    } else {
-                        Log.d("Debug:", "Your Location:" + location.latitude + "" + location.longitude)
-                        fragBinding.lat.text = location.latitude.toString()
-                        fragBinding.lng.text = location.longitude.toString()
-                    }
+
+                        Log.d("Debug:", "Your Location:" + location?.latitude + "" + location?.longitude)
+                        fragBinding.lat.text = location?.latitude.toString()
+                        fragBinding.lng.text = location?.longitude.toString()
+
                 }
 
         } else {
@@ -256,6 +258,10 @@ class FishingSpotFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         fishingSpotViewModel.load()
+       // RequestPermission()
+        getLastLocation()
+        fragBinding.fishingspotTitle.text.clear();
+        fragBinding.description.text.clear();
     }
 
     private fun render(fishingspot: FishingSpotModel) {
@@ -318,7 +324,7 @@ class FishingSpotFragment : Fragment() {
                             .show()
                     }
                 } else {
-                    
+
                     layout.btnAdd.setOnClickListener {
                         fishingSpot.title = _fragBinding?.fishingspotTitle?.text.toString()
                         fishingSpot.description = _fragBinding?.description?.text.toString()
@@ -347,17 +353,17 @@ class FishingSpotFragment : Fragment() {
             showImagePicker(imageIntentLauncher)
         }
 
-        _fragBinding?.takeImage?.setOnClickListener{
-            i("Take picture frag")
-
-            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            try {
-
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-            }catch(e: ActivityNotFoundException){
-                Toast.makeText(this@FishingSpotFragment?.context, "Error: " + e.localizedMessage, Toast.LENGTH_SHORT).show()
-            }
-        }
+//        _fragBinding?.takeImage?.setOnClickListener{
+//            i("Take picture frag")
+//
+//            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//            try {
+//
+//                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+//            }catch(e: ActivityNotFoundException){
+//                Toast.makeText(this@FishingSpotFragment?.context, "Error: " + e.localizedMessage, Toast.LENGTH_SHORT).show()
+//            }
+//        }
 
 //        _fragBinding?.fishingspotLocation?.setOnClickListener {
 //            val location = Location(52.149, -6.9896, )
