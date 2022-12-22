@@ -1,17 +1,24 @@
 # __Angler's Guide App__ Ass2_Release
 ## New Features
 - MVVM Architecture
-
-## Features to ADD
 - Swipe to Edit
 - Google Sign-in Auth
+- Toggle Button on List view for logged in User locations / All locations
+- Show on Map Users locations on map (via toggle)
+- Show all locations on map (via toggle)
 - Filtering Cards view
-- Mark As Fav
-- Show Favs on Map
+
+## Features to ADD
+- SplashScreen
 
 ## Items to Fix
-- Display on View
-- Display on Map
+
+
+## References
+ - Color for Markers (https://stackoverflow.com/questions/49566693/how-to-change-the-google-maps-marker-color-to-grey-in-android)
+ - Clear Markers from Map (https://stackoverflow.com/questions/16853182/android-how-to-remove-all-markers-from-google-map-v2)
+ - Current Location (https://doctorcodetutorial.blogspot.com/2020/05/android-simplest-way-to-get-user.html)
+ - Filtering (https://www.youtube.com/watch?v=K5YnTvsVPRk&t=695s)
 
 # __Angler's Guide App__ Ass1_Release
 __This is an app developed in Kotlin (Android Studio)__

@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseUser
 import ie.wit.anglersguide.firebase.FirebaseDBManager
+import ie.wit.anglersguide.firebase.FirebaseImageManager
 import ie.wit.anglersguide.models.FishingSpotModel
 import timber.log.Timber
-import java.lang.Exception
 
 
 class FishingSpotViewModel : ViewModel() {
@@ -63,7 +63,7 @@ class FishingSpotViewModel : ViewModel() {
 
     fun updateFishingSpot(userid:String, id: String,fishingSpot: FishingSpotModel) {
         try {
-            //DonationManager.update(email, id, donation)
+
             FirebaseDBManager.update(userid, id, fishingSpot)
             Timber.i("FishingSpot update() Success : $fishingSpot")
         }
@@ -74,6 +74,7 @@ class FishingSpotViewModel : ViewModel() {
 
     fun addFishingSpot(firebaseUser: MutableLiveData<FirebaseUser>,
                     fishingSpot: FishingSpotModel) {
+        fishingSpot.profilepic = FirebaseImageManager.imageUri.value.toString()
         status.value = try {
             //DonationManager.create(donation)
             FirebaseDBManager.create(firebaseUser, fishingSpot)

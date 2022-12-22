@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.SplashScreenActivity">
+    tools:context=".ui.splash.">
 
     <ImageView
+        android:id="@+id/iv_splashScreen"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:src="@drawable/icon"
         android:layout_centerInParent="true"
-        android:id="@+id/iv_splashScreen"
-        app:srcCompat="@drawable/icon"/>
+        android:src="@drawable/icon"
+        app:srcCompat="@drawable/icon" />
 
 </RelativeLayout>

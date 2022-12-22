@@ -7,7 +7,6 @@ import com.google.firebase.auth.FirebaseUser
 import ie.wit.anglersguide.firebase.FirebaseDBManager
 import ie.wit.anglersguide.models.FishingSpotModel
 import timber.log.Timber
-import java.lang.Exception
 
 
 class FishingSpotListViewModel : ViewModel() {
@@ -20,16 +19,51 @@ class FishingSpotListViewModel : ViewModel() {
 
     var liveFirebaseUser = MutableLiveData<FirebaseUser>()
 
-    init { load() }
+    var readOnly = MutableLiveData(false)
 
-    fun load() {
+    init { load() }
+    fun loadFiltered(searchTerm: String) {
         try {
-            //DonationManager.findAll(liveFirebaseUser.value?.email!!, donationsList)
-            FirebaseDBManager.findAll(liveFirebaseUser.value?.uid!!,fishingSpotsList)
-            Timber.i("Report Load Success : ${fishingSpotsList.value.toString()}")
+            readOnly.value = false
+            FirebaseDBManager.findAllFiltered(liveFirebaseUser.value?.uid!!,searchTerm, fishingSpotsList)
+            Timber.i("Report LoadAll Success : ${fishingSpotsList.value.toString()}")
         }
         catch (e: Exception) {
-            Timber.i("Report Load Error : $e.message")
+            Timber.i("Report LoadAll Error : $e.message")
+        }
+    }
+
+    fun loadAllFiltered(searchTerm: String) {
+        try {
+            readOnly.value = false
+            FirebaseDBManager.findAllFiltered(searchTerm, fishingSpotsList)
+            Timber.i("Report LoadAll Success : ${fishingSpotsList.value.toString()}")
+        }
+        catch (e: Exception) {
+            Timber.i("Report LoadAll Error : $e.message")
+        }
+    }
+
+    fun loadAll() {
+        try {
+            readOnly.value = true
+            FirebaseDBManager.findAll(fishingSpotsList)
+            Timber.i("Report LoadAll Success : ${fishingSpotsList.value.toString()}")
+        }
+        catch (e: Exception) {
+            Timber.i("Report LoadAll Error : $e.message")
+        }
+    }
+
+    fun load() {
+        readOnly.value = false
+        try {
+
+            FirebaseDBManager.findAll(liveFirebaseUser.value?.uid!!,fishingSpotsList)
+            Timber.i("Load Success : ${fishingSpotsList.value.toString()}")
+        }
+        catch (e: Exception) {
+            Timber.i("Load Error : $e.message")
         }
     }
 

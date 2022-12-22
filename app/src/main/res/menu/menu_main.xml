@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <item
-        android:id="@+id/mapAllFishingSpotsFragment"
-        android:orderInCategory="100"
-        android:title="@string/action_Explore"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/item_add"
-        android:icon="@android:drawable/ic_menu_add"
-        android:title="@string/menu_addFishingSpot"
+        android:id="@+id/toggleFishingSpots"
+        android:title=""
+        app:actionLayout="@layout/togglebutton_layout"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_search"
+        android:title=""
+        android:icon="@drawable/ic_baseline_search_24"
+        app:showAsAction="always|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        />
+
 </menu>

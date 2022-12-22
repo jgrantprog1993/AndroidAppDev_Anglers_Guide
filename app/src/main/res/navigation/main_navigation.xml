@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_fishingSpotListFragment_to_fishingSpotFragment"
             app:destination="@id/fishingSpotFragment" />
+        <action
+            android:id="@+id/action_fishingSpotListFragment_to_fishingSpotDetailFragment"
+            app:destination="@id/fishingSpotDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/mapAllFishingSpotsFragment"
@@ -40,9 +43,18 @@
         <action
             android:id="@+id/action_fishingSpotFragment_to_fishingSpotListFragment"
             app:destination="@id/fishingSpotListFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/fishingSpotDetailFragment"
+        android:name="ie.wit.anglersguide.ui.detail.FishingSpotDetailFragment"
+        android:label="fishingSpotDetailFragment" >
+        <action
+            android:id="@+id/action_fishingSpotDetailFragment_to_fishingSpotListFragment"
+            app:destination="@id/fishingSpotListFragment" />
         <argument
             android:name="fishingspotId"
-            app:argType="string"
-          />
+            app:argType="string" />
     </fragment>
+
 </navigation>

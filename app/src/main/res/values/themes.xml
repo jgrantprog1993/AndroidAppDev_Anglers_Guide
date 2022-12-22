@@ -11,6 +11,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+
     </style>
 
     <style name="Theme.AnglersGuide.NoActionBar">
@@ -18,9 +19,19 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="SplashTheme" parent="Theme.AnglersGuide.NoActionBar">
+        <item name="android:windowBackground">@drawable/backgroundss</item>
+    </style>
+
+    <style name="toggleStyle">
+        <item name="colorControlActivated">@color/colorWhite</item>
+        <item name="colorControlHighlight">@color/black</item>
+    </style>
+
     <style name="Theme.AnglersGuide.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.AnglersGuide.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 
     <!-- START Firebase Resources-->
     <!-- Activity with no Title -->

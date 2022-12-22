@@ -4,21 +4,16 @@ package ie.wit.anglersguide.ui.list
 import LoggedInViewModel
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
-import androidx.core.content.ContextCompat
+import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
@@ -27,17 +22,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ie.wit.anglersguide.R
 import ie.wit.anglersguide.adaptors.FishingSpotAdapter
-import ie.wit.anglersguide.databinding.FragmentFishingSpotListBinding
-import ie.wit.anglersguide.main.MainApp
 import ie.wit.anglersguide.adaptors.FishingSpotListener
-import ie.wit.anglersguide.firebase.FirebaseDBManager
+import ie.wit.anglersguide.databinding.FragmentFishingSpotListBinding
 import ie.wit.anglersguide.models.FishingSpotModel
 import ie.wit.anglersguide.ui.activity.FishingSpotListViewModel
-import ie.wit.anglersguide.utils.createLoader
-import ie.wit.anglersguide.utils.hideLoader
-import ie.wit.anglersguide.utils.showLoader
-import ie.wit.anglersguide.utils.SwipeToDeleteCallback
-import ie.wit.anglersguide.utils.SwipeToEditCallback
+import ie.wit.anglersguide.utils.*
+import timber.log.Timber
 
 class FishingSpotListFragment: Fragment(), FishingSpotListener {
 
@@ -46,18 +36,13 @@ class FishingSpotListFragment: Fragment(), FishingSpotListener {
     lateinit var loader : AlertDialog
     private val fishingSpotListViewModel: FishingSpotListViewModel by activityViewModels()
     private val loggedInViewModel : LoggedInViewModel by activityViewModels()
-
-
-    //private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
-    //private lateinit var deleteIcon: Drawable
-    //var fishingSpot = FishingSpotModel()
-    //private var swipeBackground: ColorDrawable = ColorDrawable(Color.parseColor("#FF0000"))
-
+    lateinit var searchView: SearchView
+    var toggle: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
-    @SuppressLint("UseRequireInsteadOfGet")
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -68,16 +53,17 @@ class FishingSpotListFragment: Fragment(), FishingSpotListener {
         loader = createLoader(requireActivity())
         fragBinding.recyclerView.layoutManager = LinearLayoutManager(activity)
         showLoader(loader,"Downloading FishingSpots")
+        fishingSpotListViewModel.observableFishingSpotsList.observe(viewLifecycleOwner,
+            Observer {
+                    fishingspots ->
+                        fishingspots?.let {
 
-        fishingSpotListViewModel.observableFishingSpotsList.observe(viewLifecycleOwner, Observer {
-                fishingspots ->
-                fishingspots?.let {
-                    render(fishingspots as ArrayList<FishingSpotModel>)
-                    hideLoader(loader)
-                    //checkSwipeRefresh()
-                }
-        })
-        //setSwipeRefresh()
+                            render(fishingspots as List<FishingSpotModel>)
+                            hideLoader(loader)
+                        }
+            })
+
+
         val swipeDeleteHandler = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 showLoader(loader,"Deleting FishingSpot")
@@ -106,13 +92,46 @@ class FishingSpotListFragment: Fragment(), FishingSpotListener {
     private fun setupMenu() {
         (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
             override fun onPrepareMenu(menu: Menu) {
-                // Handle for example visibility of menu items
             }
+
 
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_main, menu)
+                val item = menu.findItem(R.id.toggleFishingSpots) as MenuItem
+                item.setActionView(R.layout.togglebutton_layout)
+                val toggleFishingSpots: SwitchCompat = item.actionView!!.findViewById(R.id.toggleButton)
+                toggleFishingSpots.isChecked = false
+                toggle = toggleFishingSpots.isChecked
+                val search = menu?.findItem(R.id.action_search)
+                val searchView = search?.actionView as? SearchView
+                searchView?.setQueryHint("Search Title")
+                searchView?.isSubmitButtonEnabled = true
+                searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        return false
+                    }
 
+                    override fun onQueryTextChange(query: String?): Boolean {
+                        if(query !=null)
+                        {
+                            searchDB(query)
+                        }
+                        Timber.i("QUERY ->"+query)
 
+                        return false
+                    }
+
+                })
+
+                toggleFishingSpots.setOnCheckedChangeListener { _, isChecked ->
+                    toggle = if (isChecked) {
+                        fishingSpotListViewModel.loadAll()
+                        true
+                    } else {
+                        fishingSpotListViewModel.load()
+                        false
+                    }
+                }
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -126,8 +145,9 @@ class FishingSpotListFragment: Fragment(), FishingSpotListener {
     }
 
         fun render(fishingSpots: List<FishingSpotModel>) {
+            Timber.i("Rendering ->" + fishingSpots)
             fragBinding.recyclerView.adapter =
-                FishingSpotAdapter(fishingSpots as MutableList<FishingSpotModel>, this)
+                FishingSpotAdapter(fishingSpots as MutableList<FishingSpotModel>, this, fishingSpotListViewModel.readOnly.value!!)
             if (fishingSpots.isEmpty()) {
                 fragBinding.recyclerView.visibility = View.GONE
                 fragBinding.FishingSpotsNotFound.visibility = View.VISIBLE
@@ -136,9 +156,6 @@ class FishingSpotListFragment: Fragment(), FishingSpotListener {
                 fragBinding.FishingSpotsNotFound.visibility = View.GONE
             }
         }
-
-
-
 
     companion object {
         @JvmStatic
@@ -149,13 +166,22 @@ class FishingSpotListFragment: Fragment(), FishingSpotListener {
     }
 
     override fun onFishingSpotClick(fishingspot: FishingSpotModel) {
-        val action = FishingSpotListFragmentDirections.actionFishingSpotListFragmentToFishingSpotFragment(fishingspot.uid!!)
-        findNavController().navigate(action)
+        val action = FishingSpotListFragmentDirections.actionFishingSpotListFragmentToFishingSpotDetailFragment(fishingspot.uid!!)
+        if(!fishingSpotListViewModel.readOnly.value!!) {
+            findNavController().navigate(action)
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        fishingSpotListViewModel.load()
+        showLoader(loader, "Downloading FishingSpots")
+        loggedInViewModel.liveFirebaseUser.observe(viewLifecycleOwner, Observer { firebaseUser ->
+            if (firebaseUser != null) {
+                fishingSpotListViewModel.liveFirebaseUser.value = firebaseUser
+                fishingSpotListViewModel.load()
+            }
+        })
+
     }
 
     override fun onDestroyView() {
@@ -163,36 +189,45 @@ class FishingSpotListFragment: Fragment(), FishingSpotListener {
         _fragBinding = null
     }
 
+    fun getFilteredList(s: String) {
 
-//    private fun registerRefreshCallback() {
-//        refreshIntentLauncher =
-//            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-//            { loadFishingSpots() }
-//    }
-//
-//    private fun loadFishingSpots() {
-//        showFishingSpots(app.fishingspots.findAll())
-//    }
-//
-//    fun showFishingSpots (fishingspots: MutableList<FishingSpotModel>) {
-//        _fragBinding?.recyclerView?.adapter = FishingSpotAdapter(fishingspots, this)
-//        _fragBinding?.recyclerView?.adapter?.notifyDataSetChanged()
-//    }
 
-   /// override fun onCreateOptionsMenu(menu: Menu): Boolean {
-       // menuInflater.inflate(R.menu.menu_main, menu)
-       // return super.onCreateOptionsMenu(menu)
-   // }
+    }
 
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        when (item.itemId) {
-//            R.id.item_add -> {
-//                val launcherIntent = Intent(this@FishingSpotListFragment.context, FishingspotActivity::class.java)
-//                startActivityForResult(launcherIntent,0)
-//            }
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
+    @SuppressLint("BinaryOperationInTimber")
+    fun onQueryTextSubmit(query: String?): Boolean {
+        return true
+    }
+
+    override fun onQueryTextChange(query: String?): Boolean {
+        if(query !=null)
+        {
+            searchDB(query)
+        }
+        Timber.i("QUERY1 ->"+query)
+        return true
+    }
+
+    private fun searchDB(query:String)
+    {
+
+        val searchQuery = "$query"
+        Timber.i("toggle ->%s", toggle)
+        if(!toggle) {
+            fishingSpotListViewModel.loadFiltered(searchQuery)
+        }
+        else{
+            fishingSpotListViewModel.loadAllFiltered(searchQuery)
+        }
+
+    }
+}
+
+private fun SearchView?.setOnQueryTextListener(onQueryTextListener: SearchView.OnQueryTextListener) {
+
+}
+
+private fun SearchView?.setOnQueryTextListener(searchView: SearchView) {
 
 }
 

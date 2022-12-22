@@ -2,22 +2,23 @@ package ie.wit.anglersguide.adaptors
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
-import ie.wit.anglersguide.R
 import ie.wit.anglersguide.databinding.CardFishingspotBinding
 import ie.wit.anglersguide.models.FishingSpotModel
-import timber.log.Timber.i
+import ie.wit.anglersguide.utils.customTransformation
 
 interface FishingSpotListener {
 
 
     fun onFishingSpotClick(fishingspot: FishingSpotModel)
+    fun onQueryTextChange(query: String?): Boolean
 }
 
 class FishingSpotAdapter constructor(private var fishingspots: MutableList<FishingSpotModel>,
-                                     private val listener: FishingSpotListener) :
+                                     private val listener: FishingSpotListener,
+                                     private val readOnly: Boolean) :
     RecyclerView.Adapter<FishingSpotAdapter.MainHolder>() {
 
 // https://www.youtube.com/watch?v=eEonjkmox-0
@@ -27,9 +28,8 @@ class FishingSpotAdapter constructor(private var fishingspots: MutableList<Fishi
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
-        val binding = CardFishingspotBinding
-            .inflate(LayoutInflater.from(parent.context), parent, false)
-        return MainHolder(binding)
+        val binding = CardFishingspotBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MainHolder(binding, readOnly)
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
@@ -60,18 +60,26 @@ class FishingSpotAdapter constructor(private var fishingspots: MutableList<Fishi
 //            .show()
 //    }
 
-    class MainHolder(private val binding : CardFishingspotBinding) :
+    class MainHolder(val binding: CardFishingspotBinding, private val readOnly: Boolean) :
         RecyclerView.ViewHolder(binding.root) {
+
+        val readOnlyRow = readOnly
 
         fun bind(fishingspot: FishingSpotModel, listener: FishingSpotListener) {
             binding.root.tag = fishingspot
 
-            binding.imageIcon.setImageResource(R.mipmap.ic_launcher_round)
+            Picasso.get().load(fishingspot.profilepic.toUri())
+                .resize(200, 200)
+                .transform(customTransformation())
+                .centerCrop()
+                .into(binding.imageIcon)
             binding.root.setOnClickListener { listener.onFishingSpotClick(fishingspot) }
+
 
             binding.fishingspotTitle.text = fishingspot.title
             binding.description.text = fishingspot.description
-            Picasso.get().load(fishingspot.image).resize(200,200).into(binding.imageIcon)
+
+//            binding.executePendingBindings()
 
 
         }

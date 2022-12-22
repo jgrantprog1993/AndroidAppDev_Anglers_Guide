@@ -3,17 +3,62 @@ package ie.wit.anglersguide.firebase
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
-import com.google.firebase.database.FirebaseDatabase
 import ie.wit.anglersguide.models.FishingSpotModel
 import ie.wit.anglersguide.models.FishingSpotStore
-
 import timber.log.Timber
 
 object FirebaseDBManager : FishingSpotStore {
 
     var database: DatabaseReference = FirebaseDatabase.getInstance().reference
 
+    fun findAllFiltered( searchTerm: String, fishingspotsList: MutableLiveData<List<FishingSpotModel>>) {
+        database.child("fishingspots")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.i("Firebase FishingSpot error : ${error.message}")
+                }
 
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val localList = ArrayList<FishingSpotModel>()
+                    val children = snapshot.children
+                    children.forEach {
+                        val fishingspot = it.getValue(FishingSpotModel::class.java)
+                        if (fishingspot?.title?.contains(searchTerm, ignoreCase = true) == true) {
+                            localList.add(fishingspot!!)
+                        }
+                    }
+                    database.child("fishingspots")
+                        .removeEventListener(this)
+
+                    fishingspotsList.value = localList
+                }
+            })
+    }
+
+    fun findAllFiltered(userid: String, searchTerm: String, fishingspotsList: MutableLiveData<List<FishingSpotModel>>) {
+
+        database.child("user-fishingspots").child(userid)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.i("Firebase Fishingspot error : ${error.message}")
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val localList = ArrayList<FishingSpotModel>()
+                    val children = snapshot.children
+                    children.forEach {
+                        val fishingspot = it.getValue(FishingSpotModel::class.java)
+                        if (fishingspot?.title?.contains(searchTerm, ignoreCase = true) == true) {
+                            localList.add(fishingspot!!)
+                        }
+                    }
+                    database.child("user-fishingspots").child(userid)
+                        .removeEventListener(this)
+
+                    fishingspotsList.value = localList
+                }
+            })
+    }
     override fun findAll(fishingspotsList: MutableLiveData<List<FishingSpotModel>>) {
         database.child("fishingspots")
             .addValueEventListener(object : ValueEventListener {
@@ -107,5 +152,26 @@ object FirebaseDBManager : FishingSpotStore {
         childUpdate["user-fishingspots/$userid/$fishingspotid"] = fishingspotValues
 
         database.updateChildren(childUpdate)
+    }
+
+    fun updateImageRef(userid: String,imageUri: String) {
+
+        val userDonations = database.child("user-donations").child(userid)
+        val allDonations = database.child("donations")
+
+        userDonations.addListenerForSingleValueEvent(
+            object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {}
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    snapshot.children.forEach {
+                        //Update Users imageUri
+                        it.ref.child("profilepic").setValue(imageUri)
+                        //Update all fishingspots that match 'it'
+                        val donation = it.getValue(FishingSpotModel::class.java)
+                        allDonations.child(donation!!.uid!!)
+                            .child("profilepic").setValue(imageUri)
+                    }
+                }
+            })
     }
 }
