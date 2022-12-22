@@ -1,5 +1,6 @@
 package ie.wit.anglersguide.ui.auth
 
+import LoggedInViewModel
 import LoginRegisterViewModel
 import android.content.Intent
 import android.os.Bundle
@@ -7,7 +8,10 @@ import android.text.TextUtils
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -24,9 +28,18 @@ class Login : AppCompatActivity() {
     private lateinit var loginRegisterViewModel : LoginRegisterViewModel
     private lateinit var loginBinding : LoginBinding
     private lateinit var startForResult : ActivityResultLauncher<Intent>
+    private val viewModel: LoggedInViewModel by viewModels()
+    private val loggedInViewModel : LoggedInViewModel by viewModels()
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//
+//            installSplashScreen().apply {
+//                setKeepOnScreenCondition {
+//                    viewModel.isLoading.value
+//                }
+//            }
+
         loginBinding = LoginBinding.inflate(layoutInflater)
         setContentView(loginBinding.root)
 
